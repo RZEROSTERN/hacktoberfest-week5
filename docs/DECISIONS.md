@@ -63,3 +63,11 @@ restricted sandbox; they perform no inference.
 Remaining verification: bundled Ollama startup, the real Electron shell with its
 bundled services, all three installers and hardware budgets belong to later
 build steps. Static generation and unit tests do not prove those outcomes.
+
+## 2026-10-27 — Scoped agent instructions
+
+The root AGENTS.md is a short operational guide; api/, web/, desktop/, assets/
+and .github/ carry their own rules. The full original build brief remains in
+docs/PROJECT_BRIEF.md so shortening instructions cannot erase story approval,
+benchmark thresholds, art restrictions or release stops. Commands match the
+checked scaffold. No architecture or runtime behavior changes in this step.

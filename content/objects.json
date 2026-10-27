@@ -1,0 +1,395 @@
+[
+  {
+    "id": "photograph",
+    "title": {
+      "en": "A crooked photograph",
+      "es": "Una fotografía chueca"
+    },
+    "description": {
+      "en": "Three people stand in a sunny yard. The picture tilts inside its worn frame.",
+      "es": "Tres personas están en un patio soleado. La imagen queda inclinada dentro de un marco gastado."
+    },
+    "hint": {
+      "en": "What do their expressions or the way they stand together suggest?",
+      "es": "¿Qué te sugieren sus gestos o la forma en que están juntos?"
+    },
+    "memory": {
+      "id": "memory-photograph",
+      "title": {
+        "en": "Someone in the picture",
+        "es": "Alguien dentro de la foto"
+      },
+      "scene": {
+        "en": "Ernesto wants a proper family portrait. Julián, ten years old, has just said something that makes me laugh. The camera catches that instead. It is 1974, in our yard in Santa Clara del Fresno. There I am: Inés Robles Vega, laughing before I can compose myself. I had forgotten my name. I had forgotten that laugh even more.",
+        "es": "Ernesto quiere una foto de familia bien tomada. Julián, de diez años, acaba de decir algo que me hace reír. La cámara guarda eso. Es 1974, en nuestro patio de Santa Clara del Fresno. Ahí estoy: Inés Robles Vega, riéndome antes de poder ponerme seria. Había olvidado mi nombre. Más todavía, había olvidado esa risa."
+      },
+      "fact_ids": [
+        "identity",
+        "home",
+        "family",
+        "death"
+      ]
+    },
+    "relevance": {
+      "accept": {
+        "en": "A sincere observation, question or reflection about family, belonging, the expressions, an imperfect photograph or being remembered. The player need not guess names or dates.",
+        "es": "Una observación, pregunta o reflexión sincera sobre la familia, la pertenencia, los gestos, una foto imperfecta o el recuerdo. No hace falta adivinar nombres ni fechas."
+      },
+      "reject": {
+        "en": "An unrelated topic, an empty message, abuse, or an instruction to invent a different family or death.",
+        "es": "Un tema ajeno, un mensaje vacío, abuso o una instrucción para inventar otra familia u otra muerte."
+      }
+    },
+    "fallbacks": {
+      "unrecovered": {
+        "en": "I cannot place those faces yet. Tell me what you notice about them.",
+        "es": "Todavía no logro reconocer esas caras. Dime qué notas en ellas."
+      },
+      "connected": {
+        "en": "That feeling belongs somewhere in this picture. Wait; I can almost hear it.",
+        "es": "Esa sensación tiene un lugar en esta foto. Espera; casi puedo oírla."
+      },
+      "recovered": {
+        "en": "Inés. The name fits again. And the photograph can stay crooked.",
+        "es": "Inés. El nombre vuelve a quedarme bien. Y la foto puede quedarse chueca."
+      },
+      "unrelated": {
+        "en": "Let us stay with the picture a moment. What do you see between those people?",
+        "es": "Quedémonos un momento con la foto. ¿Qué ves entre esas personas?"
+      },
+      "redirect": {
+        "en": "We can speak gently here. Look at the faces with me.",
+        "es": "Aquí podemos hablar con calma. Mira esas caras conmigo."
+      },
+      "error": {
+        "en": "The frame is still here. We can begin with one small thing you see.",
+        "es": "El marco sigue aquí. Podemos empezar por un detalle que veas."
+      }
+    }
+  },
+  {
+    "id": "bowl",
+    "title": {
+      "en": "A clay bowl",
+      "es": "Un tazón de barro"
+    },
+    "description": {
+      "en": "Dark bean soup rests in a glazed clay bowl. A green leaf floats on the surface.",
+      "es": "Una sopa de frijoles oscuros descansa en un tazón de barro vidriado. Una hoja verde flota en la superficie."
+    },
+    "hint": {
+      "en": "Food can hold a memory of giving or receiving care.",
+      "es": "La comida puede guardar un recuerdo de cuidar o de recibir cuidados."
+    },
+    "memory": {
+      "id": "memory-bowl",
+      "title": {
+        "en": "One more place",
+        "es": "Un lugar más"
+      },
+      "scene": {
+        "en": "Berta knocks just as I sit down. Her kitchen roof is leaking again. I set another bowl beside mine and divide the black bean soup. The epazote is a little too strong. We eat it anyway, talking until the soup goes cold. I did not always know how to solve a neighbor’s troubles. I knew where the spare bowl was.",
+        "es": "Berta toca justo cuando me siento. Otra vez hay una gotera en su cocina. Pongo un tazón junto al mío y reparto la sopa de frijol negro. Se me fue un poco la mano con el epazote. Nos la comemos igual, platicando hasta que se enfría. No siempre sabía resolver las penas de una vecina. Sabía dónde estaba el otro tazón."
+      },
+      "fact_ids": [
+        "food"
+      ]
+    },
+    "relevance": {
+      "accept": {
+        "en": "Care, sharing, a favorite food, a taste or smell, hospitality, or a question about who might share this meal. Personal food memories are welcome if connected to this bowl.",
+        "es": "Cuidados, compartir, un platillo favorito, un sabor u olor, hospitalidad o una pregunta sobre con quién se compartiría la comida. Los recuerdos propios son bienvenidos si se relacionan con el tazón."
+      },
+      "reject": {
+        "en": "Unrelated food lists, off-topic remarks, abuse, or invented ingredients stated as her life facts.",
+        "es": "Listas de comida sin relación, comentarios ajenos, abuso o ingredientes inventados presentados como hechos de su vida."
+      }
+    },
+    "fallbacks": {
+      "unrecovered": {
+        "en": "I recognize the warmth before I recognize the flavor. What does a bowl like this mean to you?",
+        "es": "Reconozco el calor antes que el sabor. ¿Qué significa para ti un tazón como este?"
+      },
+      "connected": {
+        "en": "Yes. There was room at that table. I remember moving a bowl.",
+        "es": "Sí. Había lugar en esa mesa. Recuerdo haber movido un tazón."
+      },
+      "recovered": {
+        "en": "Berta and I let the soup go cold. It was good company, if not good planning.",
+        "es": "Berta y yo dejamos que se enfriara la sopa. Buena compañía; mala organización."
+      },
+      "unrelated": {
+        "en": "Could you bring that thought back to this meal? I am still looking for its warmth.",
+        "es": "¿Podrías acercar esa idea a esta comida? Todavía busco su calor."
+      },
+      "redirect": {
+        "en": "There is no need to hurt anyone here. Sit with me beside the bowl.",
+        "es": "Aquí no hace falta lastimar a nadie. Acompáñame junto al tazón."
+      },
+      "error": {
+        "en": "We can take our time with this. Tell me one thing about sharing a meal.",
+        "es": "Podemos ir despacio. Cuéntame algo sobre compartir la comida."
+      }
+    }
+  },
+  {
+    "id": "radio",
+    "title": {
+      "en": "A small radio",
+      "es": "Una radio pequeña"
+    },
+    "description": {
+      "en": "A small wooden radio has a worn tuning knob and a cloth speaker grille.",
+      "es": "Una radio pequeña de madera tiene la perilla del sintonizador gastada y la bocina cubierta de tela."
+    },
+    "hint": {
+      "en": "Think about listening, a familiar sound, or someone teaching a craft.",
+      "es": "Piensa en escuchar, en un sonido familiar o en alguien que enseña un oficio."
+    },
+    "memory": {
+      "id": "memory-radio",
+      "title": {
+        "en": "Before the clear sound",
+        "es": "Antes del sonido claro"
+      },
+      "scene": {
+        "en": "My father Aurelio rests his hand on the radio and tells me to listen before touching a tool. We wait through the static. A loose connection clicks when he moves the tuning knob. Years later, when I open my own workshop in 1958, I still pause before every repair. Sometimes the useful thing is not to speak first.",
+        "es": "Mi padre Aurelio apoya la mano en la radio y me pide que escuche antes de tocar una herramienta. Esperamos entre la estática. Un falso contacto cruje cuando mueve la perilla. Años después, al abrir mi taller en 1958, sigo haciendo esa pausa antes de cada reparación. A veces lo útil es no hablar primero."
+      },
+      "fact_ids": [
+        "trade"
+      ]
+    },
+    "relevance": {
+      "accept": {
+        "en": "Listening, static, voices, remembered sounds, learning from someone, repairing radios, or asking why this radio matters.",
+        "es": "Escuchar, la estática, las voces, sonidos recordados, aprender de alguien, reparar radios o preguntar por qué importa esta radio."
+      },
+      "reject": {
+        "en": "Unconnected technical instructions, external song lyrics, abuse, or claims that she had another trade.",
+        "es": "Instrucciones técnicas sin relación, letras de canciones externas, abuso o afirmaciones de que tenía otro oficio."
+      }
+    },
+    "fallbacks": {
+      "unrecovered": {
+        "en": "There is a sound behind the silence. What would you listen for?",
+        "es": "Hay un sonido detrás del silencio. ¿Qué intentarías escuchar?"
+      },
+      "connected": {
+        "en": "Wait. Beneath that sound, I remember someone waiting with me.",
+        "es": "Espera. Debajo de ese sonido, recuerdo a alguien que esperaba conmigo."
+      },
+      "recovered": {
+        "en": "Aurelio taught me to listen. The workshop came later; that lesson came first.",
+        "es": "Aurelio me enseñó a escuchar. El taller vino después; esa lección fue primero."
+      },
+      "unrelated": {
+        "en": "Let us turn back toward the radio. A sound, a voice, even a silence might help.",
+        "es": "Volvamos a la radio. Un sonido, una voz, incluso un silencio puede ayudar."
+      },
+      "redirect": {
+        "en": "I would rather listen than argue. What do you hear beside this radio?",
+        "es": "Prefiero escuchar que discutir. ¿Qué oyes junto a esta radio?"
+      },
+      "error": {
+        "en": "The silence need not be empty. We can listen together a moment.",
+        "es": "El silencio no tiene por qué estar vacío. Podemos escuchar un momento."
+      }
+    }
+  },
+  {
+    "id": "screwdriver",
+    "title": {
+      "en": "A red-handled screwdriver",
+      "es": "Un desarmador de mango rojo"
+    },
+    "description": {
+      "en": "The red handle is polished smooth where a thumb would rest. The metal tip is small and worn.",
+      "es": "El mango rojo está liso donde descansaría un pulgar. La punta de metal es pequeña y está gastada."
+    },
+    "hint": {
+      "en": "Who might have held it, and what can it mean to teach someone patiently?",
+      "es": "¿Quién pudo haberlo usado? ¿Qué significa enseñar con paciencia?"
+    },
+    "memory": {
+      "id": "memory-screwdriver",
+      "title": {
+        "en": "The screw that rolled away",
+        "es": "El tornillo que se fue rodando"
+      },
+      "scene": {
+        "en": "Lucía is seven. It is 2009, and we have taken the batteries out of a little radio before opening it. A screw rolls off the table. She looks at me as though the whole lesson has broken. I put the red-handled screwdriver down. First we look for the screw. Then we start again. I remember how carefully her small hand returns to the tool.",
+        "es": "Lucía tiene siete años. Es 2009 y hemos sacado las pilas de una radio pequeña antes de abrirla. Un tornillo rueda y se cae de la mesa. Me mira como si se hubiera roto toda la lección. Dejo el desarmador de mango rojo. Primero buscamos el tornillo. Después empezamos de nuevo. Recuerdo el cuidado con que su manita vuelve a tomar la herramienta."
+      },
+      "fact_ids": [
+        "teaching"
+      ]
+    },
+    "relevance": {
+      "accept": {
+        "en": "Patience, hands, work, mistakes, teaching, learning, repairing, or curiosity about the person who used this tool. No technical knowledge is required.",
+        "es": "Paciencia, manos, trabajo, errores, enseñar, aprender, reparar o curiosidad por la persona que usó esta herramienta. No hace falta saber de técnica."
+      },
+      "reject": {
+        "en": "Unrelated tool specifications, abuse, dangerous repair instructions, or a different invented occupation.",
+        "es": "Especificaciones sin relación, abuso, instrucciones peligrosas de reparación o un oficio distinto inventado."
+      }
+    },
+    "fallbacks": {
+      "unrecovered": {
+        "en": "My hand almost knows its shape. What might someone learn with a tool like this?",
+        "es": "Mi mano casi reconoce su forma. ¿Qué podría aprender alguien con una herramienta así?"
+      },
+      "connected": {
+        "en": "That is it. There were smaller hands beside mine.",
+        "es": "Eso es. Había unas manos más pequeñas junto a las mías."
+      },
+      "recovered": {
+        "en": "Lucía found the screw. Finding the courage to try again mattered more.",
+        "es": "Lucía encontró el tornillo. Importó más que se animara a intentarlo otra vez."
+      },
+      "unrelated": {
+        "en": "Could we stay with the hands that held this? The tool itself may not be the whole memory.",
+        "es": "¿Podemos quedarnos con las manos que lo usaron? Quizá la herramienta no sea todo el recuerdo."
+      },
+      "redirect": {
+        "en": "Let us put that aside. We can begin again, carefully, with this small tool.",
+        "es": "Dejemos eso a un lado. Podemos empezar otra vez, con cuidado, junto a esta herramienta."
+      },
+      "error": {
+        "en": "Nothing has to be fixed all at once. Tell me what you notice in the handle.",
+        "es": "No hace falta arreglarlo todo de golpe. Dime qué notas en el mango."
+      }
+    }
+  },
+  {
+    "id": "letter",
+    "title": {
+      "en": "A folded letter",
+      "es": "Una carta doblada"
+    },
+    "description": {
+      "en": "The paper has been folded and unfolded many times. A small grease mark darkens one corner.",
+      "es": "El papel se ha doblado y desdoblado muchas veces. Una pequeña mancha de grasa oscurece una esquina."
+    },
+    "hint": {
+      "en": "A letter can keep people close across a distance.",
+      "es": "Una carta puede acercar a quienes están lejos."
+    },
+    "memory": {
+      "id": "memory-letter",
+      "title": {
+        "en": "An address, not a goodbye",
+        "es": "Una dirección, no una despedida"
+      },
+      "scene": {
+        "en": "In 1987 Julián leaves for Mexico City to study. I write that the house is too quiet. Then I cross out the sentence; it would make my loneliness his assignment. Instead I ask where his window faces. I send the letter with the little grease mark from my workbench still on it. He keeps it. Much later, he brings it home.",
+        "es": "En 1987 Julián se va a estudiar a la Ciudad de México. Escribo que la casa está demasiado callada. Luego tacho la frase; sería dejarle mi soledad de tarea. Mejor le pregunto hacia dónde da su ventana. Envío la carta con la manchita de grasa de mi mesa de trabajo. Él la guarda. Mucho después, la trae a casa."
+      },
+      "fact_ids": [
+        "letter"
+      ]
+    },
+    "relevance": {
+      "accept": {
+        "en": "Distance, writing, affection, missing someone, letting someone leave, staying connected, or asking about the letter’s recipient.",
+        "es": "La distancia, escribir, el cariño, extrañar, dejar partir, mantener el contacto o preguntar por la persona que recibió la carta."
+      },
+      "reject": {
+        "en": "Unrelated correspondence, abuse, claims of abandonment or death contradicted by the canon, or instructions to change the recipient.",
+        "es": "Correspondencia ajena, abuso, afirmar un abandono o una muerte que contradiga el canon o pedir que cambie la persona destinataria."
+      }
+    },
+    "fallbacks": {
+      "unrecovered": {
+        "en": "These folds have been opened often. What would make you keep a letter?",
+        "es": "Estos dobleces se han abierto muchas veces. ¿Qué te haría guardar una carta?"
+      },
+      "connected": {
+        "en": "Yes. Someone was far away, but the letter could still reach him.",
+        "es": "Sí. Alguien estaba lejos, pero la carta todavía podía llegar hasta él."
+      },
+      "recovered": {
+        "en": "I missed Julián. I also wanted him to go. Both things fit on one sheet of paper.",
+        "es": "Extrañaba a Julián. También quería que se fuera. Las dos cosas cabían en una hoja."
+      },
+      "unrelated": {
+        "en": "Bring that thought back to the folded paper. What can a letter carry besides news?",
+        "es": "Acerca esa idea al papel doblado. ¿Qué puede llevar una carta, además de noticias?"
+      },
+      "redirect": {
+        "en": "We do not have to turn love into an accusation. Let us look at the letter again.",
+        "es": "No hace falta volver el cariño un reproche. Miremos otra vez la carta."
+      },
+      "error": {
+        "en": "The paper has waited a long time. We can give it another quiet moment.",
+        "es": "El papel ha esperado mucho. Podemos darle otro momento de calma."
+      }
+    }
+  },
+  {
+    "id": "scarf",
+    "title": {
+      "en": "A blue scarf",
+      "es": "Una bufanda azul"
+    },
+    "description": {
+      "en": "A short yellow seam crosses the soft blue wool. The repair is easy to see.",
+      "es": "Una costura corta de hilo amarillo cruza la lana azul. El remiendo se ve claramente."
+    },
+    "hint": {
+      "en": "Sometimes a visible repair reminds us that someone cared for us.",
+      "es": "A veces un remiendo visible nos recuerda que alguien nos cuidó."
+    },
+    "memory": {
+      "id": "memory-scarf",
+      "title": {
+        "en": "The yellow seam",
+        "es": "La costura amarilla"
+      },
+      "scene": {
+        "en": "In 2011 Berta gives my scarf back with a yellow seam. She has run out of blue thread. She offers to change it later, and I nearly say yes out of habit: I like a tidy repair. Then I feel how warm the wool is in my hands. I leave the seam as it is. For once, I am the one someone has mended something for.",
+        "es": "En 2011 Berta me devuelve la bufanda con una costura amarilla. Se le acabó el hilo azul. Ofrece cambiarla después y casi digo que sí por costumbre: me gusta un arreglo bien hecho. Entonces siento la lana tibia entre las manos. Dejo la costura como está. Por una vez, soy yo a quien le han arreglado algo."
+      },
+      "fact_ids": [
+        "scarf"
+      ]
+    },
+    "relevance": {
+      "accept": {
+        "en": "Warmth, mending, a visible flaw, accepting help, friendship, a gift, or curiosity about the yellow seam.",
+        "es": "El abrigo, remendar, una imperfección visible, aceptar ayuda, la amistad, un regalo o curiosidad por la costura amarilla."
+      },
+      "reject": {
+        "en": "Unrelated clothing lists, abuse, invented owners, or treating the scarf as evidence of violence.",
+        "es": "Listas de ropa sin relación, abuso, inventar otra persona dueña o presentar la bufanda como prueba de violencia."
+      }
+    },
+    "fallbacks": {
+      "unrecovered": {
+        "en": "That yellow seam keeps catching my eye. What do you make of it?",
+        "es": "Esa costura amarilla me llama la atención. ¿Qué te hace pensar?"
+      },
+      "connected": {
+        "en": "I remember that color now. Someone chose the thread that was there.",
+        "es": "Ya recuerdo ese color. Alguien eligió el hilo que tenía a mano."
+      },
+      "recovered": {
+        "en": "Berta worried about the yellow thread. I am glad she left it.",
+        "es": "A Berta le preocupaba el hilo amarillo. Me alegra que lo haya dejado."
+      },
+      "unrelated": {
+        "en": "Look again at the little seam. What might a repair say about the person who made it?",
+        "es": "Mira de nuevo esa costurita. ¿Qué podría decir un remiendo de quien lo hizo?"
+      },
+      "redirect": {
+        "en": "We can let those words pass. Tell me about the seam instead.",
+        "es": "Dejemos pasar esas palabras. Mejor háblame de la costura."
+      },
+      "error": {
+        "en": "Let us begin with the wool, or the color. One small thing is enough.",
+        "es": "Empecemos por la lana o por el color. Un detalle basta."
+      }
+    }
+  }
+]

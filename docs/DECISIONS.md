@@ -71,3 +71,36 @@ and .github/ carry their own rules. The full original build brief remains in
 docs/PROJECT_BRIEF.md so shortening instructions cannot erase story approval,
 benchmark thresholds, art restrictions or release stops. Commands match the
 checked scaffold. No architecture or runtime behavior changes in this step.
+
+## 2026-10-27 — Story draft, awaiting owner approval
+
+- **Inés Robles Vega, a radio repairer.** An original fictional woman with an
+  ordinary working life, family, humor and specific habits. Her hometown is
+  explicitly fictional; the story does not stand in for every Mexican household.
+  Her peaceful death is background canon, not a horror reveal.
+- **Six independently recoverable memories.** Photograph, soup bowl, radio,
+  screwdriver, letter and scarf explore belonging, hospitality, listening,
+  patience, supporting a child's independence and accepting care. Observations
+  and sincere questions can connect; the player must not guess hidden facts.
+- **Reveal references are explicit.** Life facts and people identify which
+  object reveals them. Partial and no-memory endings use no locked identities.
+  Later dialogue must use only facts from recovered memories. The full private
+  biography is not permission for a model to spoil it.
+- **Authored replies cover every object state.** Each object has unrecovered,
+  connected, recovered, unrelated, redirect and error replies in both languages.
+  Global lines cover the night's phases, empty messages, resuming and endings.
+  Model failure therefore does not require improvising dialogue.
+- **Typed content with a complete review artifact.** Pydantic checks both
+  languages, unique IDs, life dates, all three endings, fallback presence and
+  cross-references. scripts/story-review.mjs renders every line and guardrail
+  into docs/STORY_REVIEW.md for human approval. These are structural checks,
+  not proof of cultural sensitivity, translation quality or semantic canon
+  validation. Those require review and the later spike.
+- **Approval is pending.** The story remains on feature/story-canon. No story
+  PR opens and no model benchmark begins until the owner approves the full draft.
+
+## 2026-10-27 — Story approved
+
+The owner approved the full bilingual draft in this session and authorized
+continuing development. canon.json now records approved status; the story
+text is unchanged. The story PR can proceed before the model-spike branch.

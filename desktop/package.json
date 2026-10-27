@@ -1,0 +1,30 @@
+{
+  "name": "last-candle-desktop",
+  "productName": "LastCandle",
+  "version": "0.1.0",
+  "private": true,
+  "description": "La \u00daltima Vela: a local bilingual game about remembrance.",
+  "author": "Marco Ram\u00edrez",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "start": "npm run build && electron .",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "electron": "45.1.0",
+    "electron-builder": "26.18.0",
+    "eslint": "^10.12.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.0.4"
+  },
+  "homepage": "https://github.com/RZEROSTERN/hacktoberfest-week5",
+  "desktopName": "last-candle.desktop"
+}

@@ -1,0 +1,11 @@
+:root { color-scheme: dark; font-family: Georgia, serif; background: #100f24; color: #fff2d9; }
+body { margin: 0; min-width: 320px; }
+main { min-height: 100svh; box-sizing: border-box; display: grid; place-content: center; justify-items: center; text-align: center; padding: 2rem; gap: 1rem; }
+h1 { font-size: clamp(2.5rem, 8vw, 5rem); margin: 0; font-weight: 400; }
+p { font-size: 1.2rem; line-height: 1.6; max-width: 38rem; margin: 0; }
+.eyebrow { color: #ffbf67; letter-spacing: .15em; }
+.candle { font-size: 4rem; }
+label, select { font: 1.1rem system-ui, sans-serif; }
+select { background: #27203d; color: #fff2d9; border: 1px solid #ffbf67; padding: .7rem 1rem; border-radius: .3rem; }
+:focus-visible { outline: 3px solid #ffbf67; outline-offset: 4px; }
+.status { color: #d7c7d8; margin-block-start: 1rem; }

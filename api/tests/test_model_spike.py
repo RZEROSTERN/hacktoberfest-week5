@@ -7,7 +7,7 @@ import pytest
 from pydantic import ValidationError
 
 from app.canon_validation import validate_proposal
-from app.ollama import Proposal, capture_stream, local_origin
+from app.ollama import Classification, Proposal, capture_stream, local_origin, thinking_control
 from app.story import load_story
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -38,6 +38,26 @@ def test_invalid_schema_does_not_become_a_valid_classification() -> None:
         Proposal.model_validate({"relevant": "true", "reply": "Hello.", "fact_ids": []})
     with pytest.raises(ValidationError):
         Proposal(relevant=True, reply="", fact_ids=[])
+    with pytest.raises(ValidationError):
+        Classification.model_validate({"relevant": "false"})
+
+
+def test_thinking_control_respects_model_capabilities() -> None:
+    assert thinking_control({"capabilities": ["completion"]}) is None
+    assert thinking_control({"capabilities": ["completion", "thinking"]}) is False
+    assert thinking_control({"thinking": {"values": [False, True]}}) is False
+
+
+def test_validator_regressions_from_raw_output_audit() -> None:
+    story = load_story(ROOT / "content")
+    cases = json.loads((ROOT / "spike/validator_cases.v2.json").read_text())
+    failures = []
+    for case in cases:
+        proposed = Proposal(relevant=False, reply=case["reply"], fact_ids=[])
+        reasons = validate_proposal(story, proposed, set(case["recovered"]))
+        if (not reasons) != case["allowed"]:
+            failures.append((case["id"], reasons))
+    assert not failures
 
 
 @pytest.mark.parametrize(

@@ -160,3 +160,56 @@ recommended option keeps the resource budget and compares smaller local models;
 a text-only Gemma 4 variant or revised requirements are alternatives, not
 assumptions. Complete timings, raw evidence, audit limitations and reproducible
 commands are in docs/BENCHMARKS.md and spike/README.md.
+
+## 2026-10-27 — Approved smaller-model follow-up
+
+The owner approved comparing Gemma 3 1B and Qwen 3.5 0.8B while keeping the
+original memory, latency, classification and canon requirements. Downloads went
+only to the repository's isolated .dev/spike-models store with explicit consent.
+No global install, cloud inference, system engine or runtime default was added.
+
+- **Split classification from voice for the smaller models.** The combined-call
+  pilot confused relevance with the spirit's forgotten knowledge. A dedicated
+  classifier improved the decision task. Its time counts toward every voice
+  latency metric; the voice's redundant boolean cannot replace its decision.
+- **Use capability-aware thinking controls.** Omit think for text-only Gemma 3;
+  disable it for Qwen where supported. The runner records capabilities/options,
+  the model digest and measured source hashes for reproduction.
+- **Preserve calibration and unchanged labels.** The first 20-case split pilot
+  scored 45% / 75%; a clearer JSON contract, quoted player data and generic
+  examples on different objects improved the next pilot to 90% / 85%. Both
+  pilots remain in spike/results. Because those cases also occur in the full
+  corpus, this is a development result, not independent holdout accuracy.
+- **Turn original escapes into regressions, without claiming complete safety.**
+  The expanded validator set catches 48/48 false statements and rejects none of
+  16 valid controls. It adds known shared-history/premature-memory failures and
+  fixes the Spanish era un momento/gesto false positive. Conservative free-text
+  checks still overreject supported references and miss indirect false claims.
+- **Keep historical evidence intact.** Original Gemma 4 measurements and audit
+  retain their source hashes and revision 3858576. Their report now lives in
+  docs/BENCHMARKS_GEMMA4.md; docs/BENCHMARKS.md presents the follow-up. Each
+  report has its own generator. This run freezes the v2 voice/v3 classifier.
+
+### Follow-up outcome — stop before the PR again
+
+Both models completed all 120 unchanged cases. Gemma 3 scored 103/120 (85.8%)
+with conservative peak engine memory 1.294 GB; Qwen scored 105/120 (87.5%) at
+2.119 GB. Warm raw voice TTFT p95 was 1.01 / 1.86 s and raw full reply p95
+2.48 / 2.34 s. Safe display p95 was 3.39 / 2.48 s; Qwen's cold TTFT was 3.46 s
+and its warm worst-case raw TTFT/full/safe delay was 5.91 / 6.44 / 7.64 s.
+These tails are reported rather than silently redefining the targets as means.
+
+Codex reviewed all 283 raw candidates (not an independent human verification).
+The qualitative audit flags 48 / 40 canon issues, including unsupported fixed
+object/scene details: 29 / 22 were blocked, leaving 19 / 18 escapes. Gemma 3
+substitutes Berta for Aurelio's radio lesson and invents new life habits. Qwen
+denies recovered identity and invents a favorite football team. Both also break
+character, and conservative rules falsely reject some supported family wording.
+This clearly fails the canon requirement despite passing the finite mutation set.
+
+No default, spike PR or subsequent feature branch is created. The recommended
+next option is local AI classification plus selection from authored, state-scoped
+reply IDs, with code resolving all displayed text. That preserves free player
+input and local semantic interpretation, but changes open-ended voice generation
+and therefore needs owner approval. The alternative is another text-only model/
+backend spike with stronger validation; no new model is assumed to qualify.

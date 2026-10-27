@@ -252,8 +252,8 @@ def main() -> None:
         "[unloading](https://docs.ollama.com/api/generate).",
         "",
     ]
-    (ROOT / "docs/BENCHMARKS.md").write_text("\n".join(text).rstrip() + "\n")
-    print("Generated docs/BENCHMARKS.md from measured results and the explicit audit.")
+    (ROOT / "docs/BENCHMARKS_GEMMA4.md").write_text("\n".join(text).rstrip() + "\n")
+    print("Generated docs/BENCHMARKS_GEMMA4.md from the historical Gemma 4 run.")
 
 
 if __name__ == "__main__":

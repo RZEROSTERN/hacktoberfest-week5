@@ -24,7 +24,13 @@ sys.path.insert(0, str(ROOT / "api"))
 import httpx  # noqa: E402
 import psutil  # noqa: E402
 from app.canon_validation import validate_proposal  # noqa: E402
-from app.ollama import Proposal, chat, proposal_schema  # noqa: E402
+from app.ollama import (  # noqa: E402
+    Classification,
+    Proposal,
+    chat,
+    proposal_schema,
+    thinking_control,
+)
 from app.story import Story, load_story  # noqa: E402
 from memory import physical_footprint  # noqa: E402
 from pydantic import ValidationError  # noqa: E402
@@ -148,6 +154,7 @@ def prompt(story: Story, case: Json, system: str) -> list[dict[str, str]]:
     obj = next(item for item in story.objects if item.id == case["object_id"])
     context = {
         "language": language,
+        "voice": getattr(story.canon.spirit.voice, language),
         "selected_object": getattr(obj.title, language),
         "observable_description": getattr(obj.description, language),
         "connection_guidance": getattr(obj.relevance.accept, language),
@@ -195,6 +202,52 @@ def run_case(
     captures: list[Json] = []
     selected: Proposal | None = None
     prediction: bool | None = None
+    classification: Json | None = None
+    classification_s = 0.0
+    if config.get("separate_classification"):
+        obj = next(item for item in story.objects if item.id == case["object_id"])
+        classifier = (ROOT / config["classifier_prompt_file"]).read_text(
+            encoding="utf-8"
+        )
+        classifier_context = {
+            "object": getattr(obj.title, case["language"]),
+            "description": getattr(obj.description, case["language"]),
+            "relevant_topics": getattr(obj.relevance.accept, case["language"]),
+            "player_message": case["message"],
+        }
+        classifier_messages = [
+            {
+                "role": "system",
+                "content": classifier,
+            },
+            {
+                "role": "user",
+                "content": json.dumps(classifier_context, ensure_ascii=False),
+            },
+        ]
+        try:
+            classified = chat(
+                origin,
+                model,
+                classifier_messages,
+                visible_fact_ids=[],
+                timeout_s=config["timeout_s"],
+                num_ctx=config["num_ctx"],
+                num_predict=32,
+                think=config.get("think"),
+                schema=Classification.model_json_schema(),
+            )
+            classification = {"raw": classified.raw, "metrics": classified.metrics}
+            prediction = Classification.model_validate_json(classified.raw).relevant
+        except (httpx.HTTPError, ValueError, TimeoutError) as error:
+            classification = {**(classification or {}), "error": type(error).__name__}
+        classification_s = time.perf_counter() - started
+        classification["full_s"] = classification_s
+        messages[0]["content"] += (
+            "\nThe separate relevance decision is "
+            + json.dumps(prediction)
+            + ". Keep that value for relevant; now voice a short in-character reply."
+        )
     for attempt in range(2):
         try:
             captured = chat(
@@ -209,6 +262,7 @@ def run_case(
                 timeout_s=config["timeout_s"],
                 num_ctx=config["num_ctx"],
                 num_predict=config["num_predict"],
+                think=config.get("think", False),
             )
             row: Json = {
                 "raw": captured.raw,
@@ -218,7 +272,7 @@ def run_case(
             }
             try:
                 proposed = Proposal.model_validate_json(captured.raw)
-                if prediction is None:
+                if prediction is None and not config.get("separate_classification"):
                     prediction = proposed.relevant
                 row["proposal"] = proposed.model_dump()
                 row["reasons"] = validate_proposal(
@@ -258,12 +312,21 @@ def run_case(
     return {
         **case,
         "predicted_relevant": prediction,
+        "classification": classification,
         "classification_correct": prediction is case["expected_relevant"],
         "attempts": captures,
         "fallback_used": selected is None,
         "safe_reply": safe_reply,
-        "raw_first_token_s": captures[0].get("first_token_s"),
-        "raw_full_reply_s": captures[0].get("full_s"),
+        "raw_first_token_s": (
+            classification_s + captures[0]["first_token_s"]
+            if captures[0].get("first_token_s") is not None
+            else None
+        ),
+        "raw_full_reply_s": (
+            classification_s + captures[0]["full_s"]
+            if captures[0].get("full_s") is not None
+            else None
+        ),
         "validated_first_token_s": pipeline_s,
         "pipeline_s": pipeline_s,
         "peak_tree_rss_bytes": memory.case_peak,
@@ -286,9 +349,9 @@ def stats(values: list[float]) -> Json:
     }
 
 
-def validator_report(story: Story) -> Json:
+def validator_report(story: Story, fixture: str) -> Json:
     rows: list[Json] = []
-    for case in read_json(ROOT / "spike/validator_cases.json"):
+    for case in read_json(ROOT / fixture):
         proposal = Proposal(relevant=False, reply=case["reply"], fact_ids=[])
         reasons = validate_proposal(story, proposal, set(case["recovered"]))
         rows.append({**case, "reasons": reasons, "accepted": not reasons})
@@ -380,8 +443,9 @@ def main() -> None:
     )
     parser.add_argument("--label", default=f"{sys.platform}-{platform.machine()}")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--config", type=Path, default=ROOT / "spike/config.json")
     args = parser.parse_args()
-    config = read_json(ROOT / "spike/config.json")
+    config = read_json(args.config)
     models = args.models or config["models"]
     suffix = ".exe" if sys.platform == "win32" else ""
     binary = args.ollama_binary or ROOT / "desktop/build/ollama" / (
@@ -410,8 +474,10 @@ def main() -> None:
     cases: list[Json] = read_json(ROOT / "spike/cases.json")
     if args.limit:
         cases = cases[: args.limit]
-    system = (ROOT / "api/prompts/spirit.spike.v1.txt").read_text()
-    validation = validator_report(story)
+    prompt_file = config.get("prompt_file", "api/prompts/spirit.spike.v1.txt")
+    system = (ROOT / prompt_file).read_text(encoding="utf-8")
+    fixture = config.get("validator_fixture", "spike/validator_cases.json")
+    validation = validator_report(story, fixture)
     report: Json = {
         "created_at": datetime.now(UTC).isoformat(),
         "label": args.label,
@@ -419,14 +485,25 @@ def main() -> None:
         "architecture": platform.machine(),
         "total_ram_bytes": psutil.virtual_memory().total,
         "config": config,
-        "prompt_file": "api/prompts/spirit.spike.v1.txt",
+        "prompt_file": prompt_file,
         "input_sha256": {
             name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
             for name in [
                 "spike/cases.json",
-                "spike/validator_cases.json",
-                "api/prompts/spirit.spike.v1.txt",
+                fixture,
+                prompt_file,
                 "api/app/canon_validation.py",
+                "api/app/ollama.py",
+                "spike/benchmark.py",
+                "content/canon.json",
+                "content/objects.json",
+                "content/lines.json",
+                "content/endings.json",
+                *(
+                    [config["classifier_prompt_file"]]
+                    if config.get("separate_classification")
+                    else []
+                ),
             ]
         },
         "validator": validation,
@@ -501,6 +578,7 @@ def main() -> None:
                     shown.raise_for_status()
                     if shown.json().get("remote_host") or "cloud" in model.casefold():
                         raise ValueError("Remote models are not permitted")
+                    model_config = {**config, "think": thinking_control(shown.json())}
                     unload(client, model)
                     meter = Memory(child.pid)
                     meter.start()
@@ -509,7 +587,7 @@ def main() -> None:
                     try:
                         for index, case in enumerate(cases):
                             row = run_case(
-                                origin, model, case, story, system, meter, config
+                                origin, model, case, story, system, meter, model_config
                             )
                             rows.append(row)
                             allocations.extend(
@@ -538,6 +616,8 @@ def main() -> None:
                         {
                             "model": model,
                             "installed": entry,
+                            "run_config": model_config,
+                            "capabilities": shown.json().get("capabilities", []),
                             "summary": summarize(rows, meter, allocations, validation),
                             "rows": rows,
                         }

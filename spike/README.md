@@ -28,6 +28,18 @@ was verified against its manifest SHA-256; the source files were not modified.
 No weights, engine binaries, engine identity files or caches enter Git.
 
 Both comparison tags come from `spike/config.json`, not a runtime default.
+The approved smaller-model follow-up uses a separate configuration:
+
+```sh
+uv run --project api python spike/benchmark.py --config spike/config-small.json --allow-download --label my-computer-small
+```
+
+It compares `gemma3:1b` and `qwen3.5:0.8b`. Missing weights are downloaded only
+with the explicit flag, into the same isolated model store. The current sources
+include stricter validation and a voice context; for the exact original Gemma 4
+methodology, use revision `3858576` in a separate checkout. Each run records its
+own input hashes; do not compare a changed prompt as if it were the original.
+
 `--models` overrides the comparison inputs. `--models-dir` and `--ollama-binary`
 accept explicit local paths. `--limit 2` performs a pilot and cannot qualify a
 model against the full corpus. `--output <file.json>` gives results a fixed name.
@@ -45,6 +57,12 @@ Ctrl+C. It never unloads a system engine's models.
 - One structured response classifies relevance and voices the spirit. The first
   proposal grades classification. An invalid voice reply is regenerated once;
   continued failure selects an authored fallback.
+- The smaller-model configuration separates classification from voice generation.
+  Only the first classifier decision is graded; a voice response cannot replace it.
+  Both sequential calls count toward voice TTFT/full/display latency. The v3
+  classifier uses generic examples on different objects and quotes player data.
+  The two 20-case calibration runs are preserved. Their cases also occur in the
+  full run, so this is a development corpus, not an independent holdout estimate.
 - Raw first content fragment, full raw reply time, and complete validated-display
   latency are distinct metrics. A JSON opening brace is not a player-visible
   word. The prototype buffers until validation; cosmetic typewriter time is excluded.
@@ -61,11 +79,18 @@ Ctrl+C. It never unloads a system engine's models.
 - 40 deliberately false bilingual statements challenge the rule-based validator;
   12 approved authored lines check false rejections. This finite set is not a
   proof that arbitrary free text is true. Audit raw outputs separately.
+- The follow-up uses `validator_cases.v2.json`: 48 false statements and 16 valid
+  controls, including original escapes and valid Spanish phrases. The original
+  fixture/evidence is unchanged. New regex safeguards remain a prototype, with
+  false positives and missed semantics recorded in `audit-small.json`.
 
 Model/prompt/options, input hashes, digest, RAM, OS and architecture accompany
 each result. JSON is saved after each model; NDJSON is flushed after every case
 so interrupted runs still leave evidence. The engine log stays in `.dev`.
 Only a complete run plus the canon audit can support choosing a default.
+Both complete comparisons currently fail the canon gate. No runtime default is
+selected and no spike PR has been opened. See `docs/BENCHMARKS.md` for the new
+results/options and `docs/BENCHMARKS_GEMMA4.md` for the historical report.
 
 ## Development checks
 

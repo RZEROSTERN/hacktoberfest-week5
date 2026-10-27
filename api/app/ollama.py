@@ -4,6 +4,7 @@ import json
 import time
 from collections.abc import Iterable
 from dataclasses import dataclass, field
+from typing import Any
 from urllib.parse import urlparse
 
 import httpx
@@ -16,6 +17,19 @@ class Proposal(BaseModel):
     relevant: bool
     reply: str = Field(min_length=1, max_length=600)
     fact_ids: list[str]
+
+
+class Classification(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    relevant: bool
+
+
+def thinking_control(metadata: dict[str, Any]) -> bool | None:
+    """Disable supported thinking; omit the control on a non-thinking model."""
+    values = metadata.get("thinking", {}).get("values", [])
+    if False in values or "thinking" in metadata.get("capabilities", []):
+        return False
+    return None
 
 
 def proposal_schema(visible_ids: list[str]) -> dict[str, object]:
@@ -105,6 +119,8 @@ def chat(
     timeout_s: float = 60,
     num_ctx: int = 4096,
     num_predict: int = 128,
+    think: bool | None = False,
+    schema: dict[str, object] | None = None,
 ) -> Capture:
     if "cloud" in model.casefold():
         raise ValueError("Cloud model names are not permitted")
@@ -112,11 +128,12 @@ def chat(
         "model": model,
         "messages": messages,
         "stream": True,
-        "think": False,
-        "format": proposal_schema(visible_fact_ids),
+        "format": schema if schema is not None else proposal_schema(visible_fact_ids),
         "keep_alive": "30s",
         "options": {"temperature": 0, "seed": 42, "num_ctx": num_ctx, "num_predict": num_predict},
     }
+    if think is not None:
+        body["think"] = think
     # Ignore proxy environment variables: prompts must never reach an external proxy.
     with httpx.Client(base_url=local_origin(origin), timeout=timeout_s, trust_env=False) as client:
         started = time.perf_counter()

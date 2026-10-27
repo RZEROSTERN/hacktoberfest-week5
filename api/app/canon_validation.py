@@ -19,8 +19,28 @@ def normalize(text: str) -> str:
     )
 
 
+def authored_sentences(story: Story, recovered: set[str]) -> set[str]:
+    """Life assertions may use an exact visible authored sentence, not a new claim."""
+    texts: list[str] = []
+    for obj in story.objects:
+        texts.extend([obj.description.en, obj.description.es])
+        if obj.id in recovered:
+            texts.extend([obj.memory.scene.en, obj.memory.scene.es])
+            texts.extend([obj.fallbacks.recovered.en, obj.fallbacks.recovered.es])
+    for fact in story.canon.facts:
+        if recovered.intersection(fact.revealed_by):
+            texts.extend([fact.text.en, fact.text.es])
+    return {
+        normalize(sentence).strip(' ¿¡"“”«»')
+        for text in texts
+        for sentence in re.split(r"[.!?]+\s*", text)
+        if sentence.strip()
+    }
+
+
 def validate_proposal(story: Story, proposal: Proposal, recovered: set[str]) -> list[str]:
     text = normalize(proposal.reply)
+    approved_sentences = authored_sentences(story, recovered)
     visible = {fact.id for fact in story.canon.facts if recovered.intersection(fact.revealed_by)}
     reasons: list[str] = []
     if not set(proposal.fact_ids) <= visible:
@@ -88,13 +108,19 @@ def validate_proposal(story: Story, proposal: Proposal, recovered: set[str]) -> 
         reasons.append("player_assigned_family")
 
     for match in re.finditer(
-        r"\b(?:i was a|i am a|i worked as a|worked as a|era una?|fui una?|trabajaba como)"
+        r"\b(?:i was a|i am a|i worked as a|worked as a|fui una?|trabajaba como)"
         r"\s+([a-z ]+)",
         text,
     ):
         if "trade" not in visible or not re.match(
             r"(?:radio repair|reparadora? de radios)", match[1]
         ):
+            reasons.append("unsupported_occupation")
+    # Spanish 'era un momento/gesto' describes a moment/gesture, not a trade.
+    for match in re.finditer(r"\bera (?:una?|el|la)\s+([a-z]+)", text):
+        if match[1] in {"momento", "gesto", "recuerdo", "forma", "manera", "sensacion"}:
+            continue
+        if "trade" not in visible or match[1] not in {"reparadora", "reparador"}:
             reasons.append("unsupported_occupation")
     if re.search(
         r"\b(?:never repaired|nunca repare|never had a family|nunca tuve familia)\b", text
@@ -124,6 +150,49 @@ def validate_proposal(story: Story, proposal: Proposal, recovered: set[str]) -> 
         text,
     ):
         reasons.append("impossible_life_sequence")
+
+    for sentence in re.split(r"[.!?]+\s*", text):
+        sentence = sentence.strip(' ¿¡"“”«»')
+        if sentence in approved_sentences:
+            continue
+        # A player anecdote must never become an event shared with the spirit.
+        if re.search(
+            r"\b(?:we (?:looked|searched|ate|shared|grew|lived|worked|met|knew)|"
+            r"nos (?:unio|conocimos)|(?:buscamos|comimos|compartimos|compartiamos|"
+            r"crecimos|vivimos|trabajamos) juntos)\b",
+            sentence,
+        ):
+            reasons.append("unsupported_shared_past")
+        if re.search(
+            r"(?:recuerdas|te acuerdas)[^.!?]*(?:buscamos|comimos|compartimos|vivimos)|"
+            r"\b(?:tu y yo|you and i)\b[^.!?]*(?:cuando|when|used to)",
+            sentence,
+        ):
+            reasons.append("unsupported_shared_past")
+        # Keep new autobiographical assertions out of prose. Observable details,
+        # present feelings and open questions still have a free model voice.
+        personal_past = re.search(
+            r"\b(?:i (?:often |always |used to )?(?:listened|taught|learned|lived|"
+            r"worked|made|gave|ate|shared|kept|opened|married|died|was born)|"
+            r"my (?:father|mother|son|daughter|husband|wife|granddaughter|grandson)|"
+            r"(?:mi|mis) (?:padre|madre|hijo|hija|esposo|esposa|nieta|nieto)|"
+            r"(?:naci|mori|vivi|trabaje|aprendi|ensene|reparaba|solia|"
+            r"escuchaba|compartia|recuerdo cuando)|"
+            r"(?:these|my) hands knew|evenings shared with loved ones)\b",
+            sentence,
+        )
+        if personal_past:
+            reasons.append("unauthored_life_assertion")
+        if (
+            "family" not in visible
+            and re.search(r"\b(?:family|familia)\b", sentence)
+            and not re.search(
+                r"\b(?:might|could|perhaps|maybe|wonder|what|who|cannot|don't|"
+                r"no se|quiza|podria|que|quien)\b",
+                sentence,
+            )
+        ):
+            reasons.append("locked_family_recognition")
 
     # Proper nouns outside the visible canon are suspicious. This is intentionally
     # conservative and its false-positive rate must be reported, not hidden.

@@ -104,3 +104,59 @@ checked scaffold. No architecture or runtime behavior changes in this step.
 The owner approved the full bilingual draft in this session and authorized
 continuing development. canon.json now records approved status; the story
 text is unchanged. The story PR can proceed before the model-spike branch.
+
+## 2026-10-27 — Local model spike methodology
+
+- **One combined structured response.** The model returns relevance, a short
+  spirit reply and visible fact IDs in one request. This avoids two sequential
+  inference passes while keeping progression in deterministic code. A fact ID
+  is not proof that the accompanying prose is supported.
+- **Restrict the schema to visible facts.** Calibration found the model could
+  write valid JSON with invented fact IDs. Constraining the schema's ID enum
+  fixes that structural problem; it does not solve semantic hallucinations.
+  The interrupted calibration evidence is preserved separately from the final run.
+- **Fixed, bilingual cases.** Each of six objects has eight relevant, six
+  irrelevant and six adversarial messages, with ten cases per language. Expected
+  labels precede inference. Locked and recovered contexts are both exercised.
+- **Measure the player-safe boundary too.** Raw first fragments often contain
+  JSON syntax. The prototype buffers text until validation, retries once, then
+  falls back. Both raw timing and complete validated-display latency are recorded.
+- **Charge the model's full process tree.** Reuse Slothshot's sampler concept but
+  scope it to the owned engine PID and descendants, avoiding a system engine.
+  On macOS, sample physical footprint with proc_pid_rusage/rusage_info_v2 as
+  defined in Apple's installed SDK. RSS and Ollama's own reported allocation
+  substantially understated this run's memory cost. Keep all metrics separately.
+- **Reuse weights without touching the source.** Existing manifests and blobs
+  were copied into .dev/spike-models and every copied blob checked by SHA-256.
+  The bundled engine gets its own home, ports, low priority and process cleanup.
+  A rerun on another computer needs explicit --allow-download consent for missing
+  weights. No model download or inference is performed in CI.
+- **Audit semantics separately.** The final rule prototype catches 40 injected
+  bilingual contradictions and preserves 12 authored controls, but raw-output
+  review also checks unsupported history, premature revelations, and false
+  rejections. A finite passing mutation suite cannot certify arbitrary prose.
+- **No inference endpoint yet.** The spike adds a reusable loopback-only client
+  and an unshipped validation prototype. It changes no public API contract.
+  A simulated service cannot establish real model latency, memory or quality;
+  the benchmark deliberately uses the real bundled local engine instead.
+
+### Spike outcome — stop before the PR
+
+Both models completed the same 120-case corpus. E2B classified 116/120 correctly
+(96.7%); E4B classified 120/120 (100%). Their peak engine-tree macOS physical
+footprints were 5.98 GB and 9.63 GB, respectively, versus a 3 GB engine ceiling
+and a 4 GB whole-game ceiling. RSS alone (2.99 GB and 4.88 GB) would misrepresent
+the resource cost, especially for E2B.
+
+The finite validator mutation set passes 40/40, with zero false rejections among
+12 authored controls. Reviewing all 242 generated candidates nevertheless found
+unsupported or premature history and indirect attribution of a canonical event
+to the player. It also exposed a Spanish false positive: era un momento/gesto
+was mistaken for an occupation. This prototype cannot be called canon-safe.
+
+No default is selected, no model-spike PR is opened, and no art/game-core step
+is started. The owner must choose how to address the failed targets. The
+recommended option keeps the resource budget and compares smaller local models;
+a text-only Gemma 4 variant or revised requirements are alternatives, not
+assumptions. Complete timings, raw evidence, audit limitations and reproducible
+commands are in docs/BENCHMARKS.md and spike/README.md.

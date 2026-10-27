@@ -98,3 +98,9 @@ checked scaffold. No architecture or runtime behavior changes in this step.
   validation. Those require review and the later spike.
 - **Approval is pending.** The story remains on feature/story-canon. No story
   PR opens and no model benchmark begins until the owner approves the full draft.
+
+## 2026-10-27 — Story approved
+
+The owner approved the full bilingual draft in this session and authorized
+continuing development. canon.json now records approved status; the story
+text is unchanged. The story PR can proceed before the model-spike branch.

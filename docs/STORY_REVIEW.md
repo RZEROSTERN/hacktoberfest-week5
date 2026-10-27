@@ -1,6 +1,6 @@
 # Full story review — La Última Vela / The Last Candle
 
-Status: **pending_owner_approval**. Generated from the four JSON files in content/.
+Status: **approved**. Generated from the four JSON files in content/.
 
 This review includes every authored player-facing line, all life facts, reveal rules,
 relevance guidance and endings. Story changes belong in the JSON, then regenerate this file.

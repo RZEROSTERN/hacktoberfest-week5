@@ -1,0 +1,27 @@
+{
+  "name": "last-candle",
+  "version": "0.1.0",
+  "private": true,
+  "description": "La Última Vela / The Last Candle: local narrative game",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "scripts": {
+    "setup": "node scripts/tasks.mjs setup",
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "npm --prefix web run dev",
+    "dev:api": "node scripts/dev.mjs --api-only",
+    "dev:desktop": "node scripts/desktop-dev.mjs",
+    "lint": "node scripts/tasks.mjs lint",
+    "typecheck": "node scripts/tasks.mjs typecheck",
+    "test": "node scripts/tasks.mjs test",
+    "test:scripts": "node --test \"scripts/*.test.mjs\"",
+    "check": "node scripts/tasks.mjs check",
+    "dist": "node scripts/dist.mjs",
+    "dist:plan": "node scripts/dist.mjs --dry-run"
+  },
+  "devDependencies": {
+    "node": "24.21.0"
+  }
+}

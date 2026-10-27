@@ -1,0 +1,38 @@
+[
+  {
+    "id": "peace",
+    "condition": "all_memories",
+    "title": {
+      "en": "Enough light to go",
+      "es": "Luz para partir"
+    },
+    "scene": {
+      "en": "The first pale line appears at the window. Inés stands beside the ofrenda, visible now down to the small creases in her hands. “I was loved. I made things. I laughed in a crooked photograph.” She smiles. “That is a life.” She does not ask you to hold the dawn back. As she leaves, one petal settles beside the blue scarf. The room is quiet, and full.",
+      "es": "La primera claridad aparece en la ventana. Inés está junto a la ofrenda; ya se distinguen hasta los pliegues de sus manos. «Me quisieron. Arreglé cosas. Me reí en una foto chueca». Sonríe. «Eso es una vida». No te pide que detengas el amanecer. Al partir, un pétalo cae junto a la bufanda azul. La habitación está en silencio y está llena."
+    }
+  },
+  {
+    "id": "bittersweet",
+    "condition": "some_memories",
+    "title": {
+      "en": "What we could carry",
+      "es": "Lo que pudimos llevar"
+    },
+    "scene": {
+      "en": "Dawn finds some objects still quiet. The spirit looks at them, then at you. “I wanted the whole story,” she says. “But these pieces are mine.” Her hands are clearer than when she arrived. She holds them open, as if weighing what you found together. “Thank you for staying.” She leaves before you can finish your answer. You finish it anyway, beside the candles.",
+      "es": "El amanecer encuentra algunos objetos todavía en silencio. El espíritu los mira y luego te mira a ti. «Quería la historia entera», dice. «Pero estos pedazos son míos». Sus manos se ven más claras que al llegar. Las abre, como si sopesara lo que encontraron juntos. «Gracias por quedarte». Se va antes de que termines de responder. Terminas tu respuesta de todos modos, junto a las velas."
+    }
+  },
+  {
+    "id": "lost",
+    "condition": "no_memories",
+    "title": {
+      "en": "A place kept open",
+      "es": "Un lugar que queda"
+    },
+    "scene": {
+      "en": "The window turns gray. You can no longer tell where the spirit ends and the air begins. “I cannot find it,” she says. After a while: “You stayed with me, though.” Her outline thins with the night until there is only candlelight. You sit a little longer. The objects remain on the ofrenda. You turn the photograph toward the morning. There is still a place for her here.",
+      "es": "La ventana se vuelve gris. Ya no distingues dónde termina el espíritu y empieza el aire. «No logro encontrarla», dice. Después de un rato: «Pero me acompañaste». Su figura se adelgaza con la noche hasta que solo queda la luz de las velas. Te quedas un poco más. Los objetos siguen en la ofrenda. Orientas la foto hacia la mañana. Aquí todavía hay un lugar para ella."
+    }
+  }
+]

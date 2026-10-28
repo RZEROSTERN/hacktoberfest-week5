@@ -290,3 +290,20 @@ no audio downloads. The utility starts only on request, supports volume and
 cleanup, and is tested for interrupted startup. Its playback controls and
 audible integration belong to the later atmosphere step; no listening test is
 claimed yet.
+
+## 2026-10-27 — Game progression and local dialogue
+
+The player has twelve conversations before dawn. Code advances one turn for a
+submitted interaction, unlocks each memory once and selects one of the three
+endings from the recovered count. A memory recovered on the final turn is shown
+before the ending. Saves include a version and are checked for known objects,
+valid counts, phases and language before they are resumed.
+
+The local API prepares only a player-selected, installed model from local
+settings and serializes preparation and inference. It returns only the approved
+state-scoped authored line, never raw model tokens; the client reveals that safe
+line with a typewriter effect. Inference timeout or failure enters fallback mode.
+When AI classification is unavailable, the player explicitly reflects on
+whether their thought connects to the object, so a model failure cannot block
+memory recovery or any ending. Players can also choose fallback during model
+preparation. The later wizard will provide the selection and consent flow.

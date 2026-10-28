@@ -338,3 +338,13 @@ download and failure paths; a separate browser check verified the installed
 model and actual compatibility path. A separate browser interaction went from
 model preparation through relevance classification to a recovered memory. A
 fresh network download and other OS hardware still need installer testing.
+
+## 2026-10-27 — Installer smoke checks
+
+The shared local/CI installer pipeline now checks the packaged model catalog,
+authored fallback dialogue, representative illustrations and bundled font in
+addition to starting Ollama and the API. Its disposable extraction and smoke
+directories live under the repository's ignored development directory. The
+local macOS arm64 DMG and its packaged services passed these checks; its size
+and digest are recorded in BUILD_SIZES.md. Human installation and playtesting,
+and the Windows and Linux matrix, are separate evidence still to collect.

@@ -6,7 +6,7 @@
 //   1. every bundled program is there and starts (Ollama --version);
 //   2. the bundled Ollama serves on loopback and answers its own API;
 //   3. the packaged api binary starts and answers /health;
-//   4. model readiness is intentionally deferred until the model-management step;
+//   4. the bundled story, model catalog, and authored fallback are available without a model;
 //   5. the generated web app is in the bundle.
 //
 // It deliberately does NOT download a model or run inference. Downloading weights onto three CI runners would be slow and would run the
@@ -15,7 +15,6 @@
 import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import net from 'node:net'
-import os from 'node:os'
 import path from 'node:path'
 import { buildDir, capture, endGroup, group, platformId, programPaths, root } from './lib.mjs'
 
@@ -88,6 +87,10 @@ const webRoot = resourcesArg
 const webEntry = path.join(webRoot, 'index.html')
 if (fs.existsSync(webEntry)) pass('the web app is bundled')
 else fail(`the web app is missing at ${path.relative(root, webEntry)}`)
+for (const asset of ['art/title.webp', 'art/object-radio.webp', 'fonts/AtkinsonHyperlegible-Regular.ttf']) {
+  if (fs.existsSync(path.join(webRoot, asset))) pass(`web asset ${asset} is bundled`)
+  else fail(`web asset ${asset} is missing`)
+}
 
 if (failures === 0) {
   const version = capture(ollamaBinary, ['--version'])
@@ -96,7 +99,9 @@ if (failures === 0) {
 }
 
 // A folder whose name carries an accent, as a Windows user name may, which exercises the paths.
-const work = fs.mkdtempSync(path.join(os.tmpdir(), 'last-candle-humo-'))
+const temporaryRoot = path.join(root, '.dev')
+fs.mkdirSync(temporaryRoot, { recursive: true })
+const work = fs.mkdtempSync(path.join(temporaryRoot, 'last-candle-humo-á-'))
 
 try {
   if (failures === 0) {
@@ -149,8 +154,24 @@ try {
       const response = await fetch(`http://127.0.0.1:${apiPort}/health`)
       return response.ok && (await response.json()).status === 'ok'
     }, 120_000)
-    if (apiUp) pass('the packaged api answers /health')
-    else fail('the packaged api did not answer /health')
+    if (apiUp) {
+      pass('the packaged api answers /health')
+      try {
+        const setup = await fetch(`http://127.0.0.1:${apiPort}/setup/status`)
+        const status = await setup.json()
+        if (setup.ok && status.models?.length > 0 && status.setup_complete === false) pass('the bundled model catalog is available')
+        else fail('the bundled model catalog is unavailable')
+        const response = await fetch(`http://127.0.0.1:${apiPort}/dialogue`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ object_id: 'radio', recovered: [], language: 'en', message: 'I hear the radio' }),
+        })
+        const dialogue = await response.json()
+        if (response.ok && dialogue.relevant === null && dialogue.fallback_used && typeof dialogue.reply === 'string' && dialogue.reply.length > 0) pass('bundled authored dialogue works without a model')
+        else fail('bundled authored dialogue is unavailable')
+      } catch {
+        fail('the packaged setup or dialogue endpoint could not be checked')
+      }
+    } else fail('the packaged api did not answer /health')
 
 
   }

@@ -8,9 +8,8 @@
 //   Linux    the same, from the .tar.zst: bin/ollama and lib/ollama keep the layout Ollama expects.
 // The binaries are Ollama's own and stay untouched; only whole folders are left out.
 import fs from 'node:fs'
-import os from 'node:os'
 import path from 'node:path'
-import { buildDir, download, downloadsDir, endGroup, formatBytes, group, mkdirp, platformId, programPaths, rmrf, run, sizeOf, tarProgram, versions } from './lib.mjs'
+import { buildDir, download, downloadsDir, endGroup, formatBytes, group, mkdirp, platformId, programPaths, rmrf, root, run, sizeOf, tarProgram, versions } from './lib.mjs'
 
 const id = platformId()
 const { version, assets, licenseSha256 } = versions.ollama
@@ -34,7 +33,9 @@ rmrf(out)
 mkdirp(out)
 
 if (id === 'darwin-arm64') {
-  const work = fs.mkdtempSync(path.join(os.tmpdir(), 'last-candle-ollama-'))
+  const temporaryRoot = path.join(root, '.dev')
+  fs.mkdirSync(temporaryRoot, { recursive: true })
+  const work = fs.mkdtempSync(path.join(temporaryRoot, 'last-candle-ollama-'))
   try {
     run(tarProgram(), ['-xzf', archive, '-C', work])
     for (const name of ['ollama', 'llama-server']) fs.copyFileSync(path.join(work, name), path.join(out, name))

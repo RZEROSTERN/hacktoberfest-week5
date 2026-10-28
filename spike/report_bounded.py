@@ -182,6 +182,14 @@ def main() -> None:
         "| Model | Original corpus | New held-out corpus | Fallbacks |",
         "| --- | ---: | ---: | ---: |",
     ]
+    for model, a in zip(results["models"], assessments, strict=True):
+        cols = [
+            f"{s['correct']}/{s['total']} ({100 * s['accuracy']:.1f}%)"
+            for s in a["subsets"].values()
+        ]
+        text.append(
+            f"| {model['model']} | {' | '.join(cols)} | {model['summary']['fallbacks']}/240 |"
+        )
     if args.prepared:
         text += [
             "",
@@ -208,14 +216,6 @@ def main() -> None:
                 f"| {model['model']} | {model['preparation']['startup_s']:.2f} | "
                 f"{model['idle_probe']['resident']} |"
             )
-    for model, a in zip(results["models"], assessments, strict=True):
-        cols = [
-            f"{s['correct']}/{s['total']} ({100 * s['accuracy']:.1f}%)"
-            for s in a["subsets"].values()
-        ]
-        text.append(
-            f"| {model['model']} | {' | '.join(cols)} | {model['summary']['fallbacks']}/240 |"
-        )
     text += [
         "",
         "## Latency (seconds)",

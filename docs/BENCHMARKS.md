@@ -40,6 +40,8 @@ and [BENCHMARKS_SMALL_PROSE.md](BENCHMARKS_SMALL_PROSE.md), with raw evidence/au
 
 | Model | Original corpus | New held-out corpus | Fallbacks |
 | --- | ---: | ---: | ---: |
+| gemma3:1b | 103/120 (85.8%) | 100/120 (83.3%) | 0/240 |
+| qwen3.5:0.8b | 105/120 (87.5%) | 109/120 (90.8%) | 0/240 |
 
 ## Startup preparation
 
@@ -60,8 +62,6 @@ a claim that cold model loading itself now takes less than two seconds.
 | --- | ---: | --- |
 | gemma3:1b | 1.30 | True |
 | qwen3.5:0.8b | 2.61 | True |
-| gemma3:1b | 103/120 (85.8%) | 100/120 (83.3%) | 0/240 |
-| qwen3.5:0.8b | 105/120 (87.5%) | 109/120 (90.8%) | 0/240 |
 
 ## Latency (seconds)
 

@@ -12,7 +12,36 @@ Nuxt and Vue (MIT), FastAPI (MIT), Pydantic (MIT), HTTPX (BSD-3-Clause), Uvicorn
 the installed application by the packaging scripts. PyInstaller's distribution
 exception permits shipping the bundled Python application.
 
-No external art, audio, or font files have been added yet. System fonts are used
-for the scaffold. Original development-generated artwork, its prompts, and all
-external asset licenses will be recorded before shipping. No model weights are
-bundled; the selected model's license will be recorded after the benchmark.
+## Artwork
+
+The original illustrations were generated during development with the built-in
+image-generation tool through a ChatGPT subscription, then reviewed and optimized
+for this project. The complete prompts and revision notes are in
+[docs/ART_PROMPTS.md](docs/ART_PROMPTS.md); the style guide is in
+[docs/ART_STYLE.md](docs/ART_STYLE.md). The image tool is not used by the game.
+
+## Fonts
+
+- **Atkinson Hyperlegible**, copyright 2020 Braille Institute of America, Inc.,
+  [source](https://fonts.google.com/specimen/Atkinson+Hyperlegible), SIL Open Font
+  License 1.1: [license text](assets/licenses/AtkinsonHyperlegible-OFL.txt).
+  Regular and bold font blobs: `b3cc4200fcf09d600eac74002ab4ea65b404a536` and
+  `ca3f613847de62b8da83d2dab500ec391c8fe477` in the Google Fonts repository.
+- **Cormorant Garamond**, copyright 2015 the Cormorant Project Authors,
+  [source](https://fonts.google.com/specimen/Cormorant+Garamond), SIL Open Font
+  License 1.1: [license text](assets/licenses/CormorantGaramond-OFL.txt).
+  Variable font blob: `d992a83ce525c330fad3a19087746bcb2dc038ee` in Google Fonts.
+
+The original font files were downloaded from the Google Fonts repository and
+verified against those Git blob hashes. They are distributed without modification.
+
+## Local model and sound
+
+The recommended [Qwen 3.5 0.8B](https://ollama.com/library/qwen3.5:0.8b) weights
+use Apache License 2.0; [the license](assets/licenses/Qwen3.5-Apache-2.0.txt) was
+copied from the model manifest. Weights are not bundled and require explicit
+download consent. All inference is local to the player's computer.
+
+No external sound files are included. `web/app/utils/ambient-audio.ts` generates
+a quiet breeze and simple musical tones with the Web Audio API. It will be wired
+to player-controlled sound settings during the atmosphere step.

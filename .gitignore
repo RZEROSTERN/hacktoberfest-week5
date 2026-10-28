@@ -17,3 +17,6 @@ desktop/release/
 .DS_Store
 assets/incoming/*
 !assets/incoming/.gitkeep
+/web/public/art/
+/web/public/fonts/
+/web/public/licenses/

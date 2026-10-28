@@ -1,0 +1,42 @@
+{
+  "opening": {
+    "en": "The family has gone to rest. You are keeping watch beside the ofrenda when a shape gathers on the other side of the candles. “I think I have been here before,” she says. “I cannot remember who I was. Would you sit with me?” Beyond the window it is still November 1. Dawn will come, one conversation at a time.",
+    "es": "La familia se ha ido a descansar. Acompañas la ofrenda cuando una figura empieza a formarse al otro lado de las velas. «Creo que ya he estado aquí», dice. «No recuerdo quién era. ¿Te sientas conmigo?». Afuera todavía es 1 de noviembre. El amanecer llegará, una conversación a la vez."
+  },
+  "early": {
+    "en": "There is time for one small detail. Which object draws your eye?",
+    "es": "Hay tiempo para un detalle. ¿Qué objeto te llama la atención?"
+  },
+  "middle": {
+    "en": "The candles are shorter. Let us keep looking, while we can.",
+    "es": "Las velas están más cortas. Sigamos mirando mientras podamos."
+  },
+  "late": {
+    "en": "The window is beginning to pale. I am here with you for this moment.",
+    "es": "La ventana empieza a aclarar. En este momento estoy aquí contigo."
+  },
+  "empty_message": {
+    "en": "You can begin with a question, or with something you notice.",
+    "es": "Puedes empezar con una pregunta o con algo que notes."
+  },
+  "redirect": {
+    "en": "Let us leave that outside this room. Tell me something about the ofrenda.",
+    "es": "Dejemos eso fuera de esta habitación. Cuéntame algo de la ofrenda."
+  },
+  "unavailable": {
+    "en": "The words come slowly tonight. The objects can help us find them.",
+    "es": "Las palabras llegan despacio esta noche. Los objetos pueden ayudarnos a encontrarlas."
+  },
+  "resume": {
+    "en": "You are still beside the candles. We can continue where we were.",
+    "es": "Sigues junto a las velas. Podemos seguir donde nos quedamos."
+  },
+  "memory_recovered": {
+    "en": "That was mine. Thank you for helping me find it.",
+    "es": "Eso era mío. Gracias por ayudarme a encontrarlo."
+  },
+  "ending": {
+    "en": "It is dawn. Let us sit together for the last of the candlelight.",
+    "es": "Ya amanece. Acompañémonos en lo que queda de luz."
+  }
+}

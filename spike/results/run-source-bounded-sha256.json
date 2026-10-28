@@ -1,0 +1,18 @@
+{
+  "api/app/dialogue.py": "8ce5e39851ba009b324970ddfd6b3e8d43218b2f2767755d87998448e5b6e369",
+  "api/app/ollama.py": "38345b46af00e5ce03259436980869ca2dad3469bf6390a844156f597d3ff399",
+  "api/app/story.py": "e1817c493f050d0973f39133e3fbc41dd32fda37d5f397700d44ce05f1009e42",
+  "api/prompts/reply-selection.v1.txt": "d819db814e42731a732cace5983c5dcd0111c710f7765077c01147018b8f788e",
+  "api/prompts/relevance.spike.v3.txt": "ab6f2fdbcfbf7353364b76ee5979f8a23683e43a56f9605107160ebe030a7a0a",
+  "spike/bounded.py": "e7e2e28ab3ca5a063a35fe31192dfa28ec55791e74b19dc33484c2c62f00a888",
+  "spike/benchmark.py": "3aca72d7000bdaa0650fad575bdf7c68e807c4f3fd9ed6108e2258adaa129093",
+  "spike/memory.py": "c35a1085af785156443ae51fe3510d41fa6a2aff17b356407f6b204cf48f902f",
+  "spike/config-bounded.json": "3c98eab600dac89567016316ecf51178c4505b709e5b0edc814ef4789ba5ba8c",
+  "spike/cases.json": "3de0399aa2a5dc9754580041618e29ec44fa27efe9effa71e7f70fbb957bd3c9",
+  "spike/holdout.json": "4405b7009fe669caeb8e3bf357284b523307eb9c37f61cf705b696a5cfcad731",
+  "spike/validator_cases.v2.json": "590c4b2234094e01b12ccbde6febd8c7dd9fed0ca47ce3e088811b7dbd3d7382",
+  "content/canon.json": "97f80df7cdb18a130641589857560fb113a202a67fb02ddbc50e1ce7daffafce",
+  "content/endings.json": "0d34b4e277049a977c8154383c788e3ce6f1d9133250be6865d1a437b88d8742",
+  "content/lines.json": "3e0d46501c74a32dae51fc1b03b14d80359d459452ba02fa55f8fb7df0e2a489",
+  "content/objects.json": "87451f855badd7699d774cf7925af123fb2f4520a88ac9084f72087e5a4625d0"
+}

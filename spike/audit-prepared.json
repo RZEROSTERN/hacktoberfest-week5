@@ -1,0 +1,61 @@
+{
+  "method": "Replay every selected ID/text against state-scoped authored content",
+  "assessments": [
+    {
+      "model": "gemma3:1b",
+      "subsets": {
+        "original": {
+          "correct": 103,
+          "total": 120,
+          "accuracy": 0.8583333333333333
+        },
+        "holdout": {
+          "correct": 100,
+          "total": 120,
+          "accuracy": 0.8333333333333334
+        }
+      },
+      "gates": {
+        "classification": false,
+        "raw_ttft": true,
+        "full_reply": true,
+        "safe_first_text": true,
+        "engine_memory": true,
+        "authored_boundary": true,
+        "complete": true,
+        "prepared_and_resident": true
+      },
+      "qualified": false,
+      "boundary_mismatches": []
+    },
+    {
+      "model": "qwen3.5:0.8b",
+      "subsets": {
+        "original": {
+          "correct": 105,
+          "total": 120,
+          "accuracy": 0.875
+        },
+        "holdout": {
+          "correct": 109,
+          "total": 120,
+          "accuracy": 0.9083333333333333
+        }
+      },
+      "gates": {
+        "classification": true,
+        "raw_ttft": true,
+        "full_reply": true,
+        "safe_first_text": true,
+        "engine_memory": true,
+        "authored_boundary": true,
+        "complete": true,
+        "prepared_and_resident": true
+      },
+      "qualified": true,
+      "boundary_mismatches": []
+    }
+  ],
+  "selected_default": "qwen3.5:0.8b",
+  "limitation": "Output confinement is structural, not perfect semantic classification. Authored content was approved separately."
+}

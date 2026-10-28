@@ -1,0 +1,481 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "The Last Candle local API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "description": "Report process readiness without loading or contacting a model.",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/setup/status": {
+      "get": {
+        "summary": "Setup Status",
+        "description": "Return setup progress, local resources and the recommended catalog.",
+        "operationId": "setup_status",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetupStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/setup/skip": {
+      "post": {
+        "summary": "Setup Skip",
+        "description": "Choose authored fallback mode without downloading a model.",
+        "operationId": "setup_skip",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetupStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/setup/start": {
+      "post": {
+        "summary": "Setup Start",
+        "description": "With explicit consent, install and check a recommended model.",
+        "operationId": "setup_start",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetupStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/prepare": {
+      "post": {
+        "summary": "Prepare",
+        "description": "Prepare an installed, selected model or explicitly enter fallback mode.",
+        "operationId": "prepare",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Readiness"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dialogue": {
+      "post": {
+        "summary": "Dialogue",
+        "description": "Resolve an authored reply; model output is never returned to the player.",
+        "operationId": "dialogue",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DialogueRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DialogueResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DialogueRequest": {
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "title": "Object Id"
+          },
+          "recovered": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "title": "Recovered"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ],
+            "title": "Language"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "object_id",
+          "recovered",
+          "language",
+          "message"
+        ],
+        "title": "DialogueRequest"
+      },
+      "DialogueResponse": {
+        "properties": {
+          "relevant": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevant"
+          },
+          "reply": {
+            "type": "string",
+            "title": "Reply"
+          },
+          "fallback_used": {
+            "type": "boolean",
+            "title": "Fallback Used"
+          }
+        },
+        "type": "object",
+        "required": [
+          "relevant",
+          "reply",
+          "fallback_used"
+        ],
+        "title": "DialogueResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "ok"
+          }
+        },
+        "type": "object",
+        "title": "Health"
+      },
+      "ModelInfo": {
+        "properties": {
+          "tag": {
+            "type": "string",
+            "title": "Tag"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "license": {
+            "type": "string",
+            "title": "License"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "tested_digest": {
+            "type": "string",
+            "title": "Tested Digest"
+          },
+          "download_bytes": {
+            "type": "integer",
+            "title": "Download Bytes"
+          },
+          "context_tokens": {
+            "type": "integer",
+            "title": "Context Tokens"
+          },
+          "thinking": {
+            "type": "boolean",
+            "title": "Thinking"
+          },
+          "requires_preparation": {
+            "type": "boolean",
+            "title": "Requires Preparation"
+          },
+          "benchmark": {
+            "type": "string",
+            "title": "Benchmark"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tag",
+          "name",
+          "license",
+          "source",
+          "tested_digest",
+          "download_bytes",
+          "context_tokens",
+          "thinking",
+          "requires_preparation",
+          "benchmark"
+        ],
+        "title": "ModelInfo"
+      },
+      "Readiness": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "fallback"
+            ],
+            "title": "Mode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode"
+        ],
+        "title": "Readiness"
+      },
+      "SetupRequest": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Model"
+          },
+          "consent": {
+            "type": "boolean",
+            "const": true,
+            "title": "Consent"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "model",
+          "consent"
+        ],
+        "title": "SetupRequest"
+      },
+      "SetupStatus": {
+        "properties": {
+          "setup_complete": {
+            "type": "boolean",
+            "title": "Setup Complete"
+          },
+          "selected_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Model"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "idle",
+              "downloading",
+              "checking",
+              "ready",
+              "failed"
+            ],
+            "title": "State"
+          },
+          "completed": {
+            "type": "integer",
+            "title": "Completed"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelInfo"
+            },
+            "type": "array",
+            "title": "Models"
+          },
+          "memory_available": {
+            "type": "integer",
+            "title": "Memory Available"
+          },
+          "disk_available": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Disk Available"
+          }
+        },
+        "type": "object",
+        "required": [
+          "setup_complete",
+          "selected_model",
+          "state",
+          "completed",
+          "total",
+          "error",
+          "models",
+          "memory_available",
+          "disk_available"
+        ],
+        "title": "SetupStatus"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

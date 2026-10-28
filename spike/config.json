@@ -1,0 +1,13 @@
+{
+  "models": [
+    "gemma4:e2b",
+    "gemma4:e4b"
+  ],
+  "num_ctx": 4096,
+  "num_predict": 128,
+  "temperature": 0,
+  "seed": 42,
+  "timeout_s": 60,
+  "source": "https://ollama.com/library/gemma4/tags",
+  "verified_on": "2026-10-27"
+}

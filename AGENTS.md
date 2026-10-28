@@ -35,7 +35,7 @@ The full product brief, build order and explicit stop points are in docs/PROJECT
 ## Non-negotiables
 - No closed-model APIs or cloud inference at runtime; no API keys anywhere in the project.
 - The model only voices the spirit and classifies relevance. Code decides progression/endings.
-- Never contradict canon: validate replies, regenerate once, then use an authored fallback.
+- Runtime dialogue selects authored reply IDs; reject prose/illegal IDs, retry once, then fallback.
 - Fully playable without a working model. Prompts are versioned files in api/prompts/.
 - Respect remembrance: no monsters, costume treatment or sensationalized death.
 - Original illustrated art only; no film/game/brand imitation, real likenesses or image text.

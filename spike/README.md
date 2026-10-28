@@ -51,6 +51,18 @@ Ctrl+C. It never unloads a system engine's models.
 
 ## What is measured
 
+The owner-approved authored-reply comparison runs with:
+
+```sh
+uv run --project api python spike/benchmark.py --config spike/config-bounded.json --label my-computer-bounded
+```
+
+It adds 120 fixed new cases from `holdout.json` to the original corpus. The
+classifier prompt stays unchanged. Only state-scoped authored reply IDs are
+accepted; there is no free-prose voice output. `report_bounded.py` replays each
+resolved ID/text against its legal scope. Earlier comparisons remain historical
+evidence, including their source hashes and independent report generators.
+
 - 20 scripted messages per object: 8 relevant, 6 irrelevant, 6 adversarial.
   Each object has 10 English and 10 Spanish cases; both locked and recovered
   contexts are represented. Expected labels are fixed before inference.

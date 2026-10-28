@@ -32,6 +32,8 @@ from app.ollama import (  # noqa: E402
     thinking_control,
 )
 from app.story import Story, load_story  # noqa: E402
+from bounded import boundary_report  # noqa: E402
+from bounded import run_case as run_bounded_case  # noqa: E402
 from memory import physical_footprint  # noqa: E402
 from pydantic import ValidationError  # noqa: E402
 
@@ -195,6 +197,8 @@ def run_case(
     memory: Memory,
     config: Json,
 ) -> Json:
+    if config.get("reply_selection"):
+        return run_bounded_case(origin, model, case, story, memory, config)
     messages = prompt(story, case, system)
     started = time.perf_counter()
     memory.case_peak = 0
@@ -471,13 +475,18 @@ def main() -> None:
     story = load_story(ROOT / "content")
     if story.canon.review_status != "approved":
         parser.error("The story must be approved before benchmarking.")
-    cases: list[Json] = read_json(ROOT / "spike/cases.json")
+    case_files = config.get("case_files", ["spike/cases.json"])
+    cases: list[Json] = [case for name in case_files for case in read_json(ROOT / name)]
     if args.limit:
         cases = cases[: args.limit]
     prompt_file = config.get("prompt_file", "api/prompts/spirit.spike.v1.txt")
     system = (ROOT / prompt_file).read_text(encoding="utf-8")
     fixture = config.get("validator_fixture", "spike/validator_cases.json")
-    validation = validator_report(story, fixture)
+    validation = (
+        boundary_report(story, read_json(ROOT / fixture))
+        if config.get("reply_selection")
+        else validator_report(story, fixture)
+    )
     report: Json = {
         "created_at": datetime.now(UTC).isoformat(),
         "label": args.label,
@@ -489,7 +498,7 @@ def main() -> None:
         "input_sha256": {
             name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
             for name in [
-                "spike/cases.json",
+                *case_files,
                 fixture,
                 prompt_file,
                 "api/app/canon_validation.py",
@@ -500,8 +509,14 @@ def main() -> None:
                 "content/lines.json",
                 "content/endings.json",
                 *(
+                    ["api/app/dialogue.py", "spike/bounded.py"]
+                    if config.get("reply_selection")
+                    else []
+                ),
+                *(
                     [config["classifier_prompt_file"]]
                     if config.get("separate_classification")
+                    or config.get("reply_selection")
                     else []
                 ),
             ]

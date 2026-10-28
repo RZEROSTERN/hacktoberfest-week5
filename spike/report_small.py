@@ -225,7 +225,7 @@ def main() -> None:
         "  spike/report.py regenerates only the historical Gemma 4 report.",
         "",
     ]
-    (ROOT / "docs/BENCHMARKS.md").write_text("\n".join(text).rstrip() + "\n")
+    (ROOT / "docs/BENCHMARKS_SMALL_PROSE.md").write_text("\n".join(text).rstrip() + "\n")
 
 
 if __name__ == "__main__":

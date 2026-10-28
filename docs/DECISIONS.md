@@ -213,3 +213,32 @@ reply IDs, with code resolving all displayed text. That preserves free player
 input and local semantic interpretation, but changes open-ended voice generation
 and therefore needs owner approval. The alternative is another text-only model/
 backend spike with stronger validation; no new model is assumed to qualify.
+
+## 2026-10-27 — Owner-approved authored reply selection
+
+The owner approved the recommended reply-selection approach (LGTM) and asked to
+continue. Runtime now classifies the free player message, then chooses an ID from
+two authored replies permitted for the selected object/recovery/relevance state.
+No generated prose is displayed. The existing approved content supplies every
+line; the biography and scenes are unchanged. Strict whole-response validation
+rejects extra fields/prose and unavailable IDs, retries once, then uses an authored
+fallback. Historical free-prose clients/validators remain only as spike evidence.
+
+The full comparison uses the original 120 cases and 120 new bilingual cases
+written before inference, including partially recovered states. Gemma 3 scores
+85.8% / 83.3% on original/new cases; Qwen scores 87.5% / 90.8%. All 480 resolved
+outputs replay exactly to their legal authored text. The boundary rejects all
+1,152 false-prose injections beside legal IDs, with 96 legal controls accepted.
+This is structural output confinement, not perfect semantic classification.
+
+The first bounded run measures cold loading as part of the first interaction:
+Qwen needs 3.04 s for safe first text, versus about 0.41 s warmed. It otherwise
+meets classification and memory targets (1.86 GB). Gemma fits at 1.07 GB but falls
+below accuracy on the new cases. No PR/default is selected from this cold run.
+
+The next orchestration fix is an explicit preparation phase before accepting
+player messages: preload the selected local model, keep it resident during this
+short game, and unload on close. Startup cost must be reported separately and
+its memory charged to the budget. The actual preparation helper will be measured;
+game/wizard work must gate input on readiness rather than silently moving the
+same cold delay onto the first player message. All interactive targets remain.

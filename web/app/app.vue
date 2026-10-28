@@ -24,6 +24,46 @@ const mode = ref<'preparing' | 'ready' | 'fallback'>('preparing')
 const busy = ref(false)
 const saveAvailable = ref(true)
 const api = useApi()
+interface ModelOption { tag: string, name: string, download_bytes: number, license: string }
+interface SetupStatus { setup_complete: boolean, selected_model: string | null, state: 'idle' | 'downloading' | 'checking' | 'ready' | 'failed', completed: number, total: number, error: string | null, models: ModelOption[], memory_available: number, disk_available: number | null }
+const setupStatus = ref<SetupStatus | null>(null)
+const setupVisible = ref(false)
+const checkingSetup = ref(true)
+const setupBusy = ref(false)
+let setupTimer: ReturnType<typeof setTimeout> | undefined
+let mounted = true
+async function refreshSetup() {
+  try {
+    const status = await api<SetupStatus>('/setup/status', { timeout: 3000 })
+    if (!mounted) return
+    setupStatus.value = status
+    if (status.state === 'downloading' || status.state === 'checking') setupTimer = setTimeout(refreshSetup, 1000)
+  } catch { if (mounted && setupVisible.value) setupStatus.value = null }
+}
+async function checkFirstLaunch() {
+  await refreshSetup()
+  if (!mounted) return
+  setupVisible.value = setupStatus.value !== null && !setupStatus.value.setup_complete
+  checkingSetup.value = false
+}
+async function startSetup() {
+  const option = setupStatus.value?.models[0]
+  if (!option || setupBusy.value) return
+  setupBusy.value = true
+  try { setupStatus.value = await api<SetupStatus>('/setup/start', { method: 'POST', body: { model: option.tag, consent: true } }); await refreshSetup() }
+  catch { if (setupStatus.value) setupStatus.value = { ...setupStatus.value, state: 'failed', error: 'setup_failed' } }
+  finally { setupBusy.value = false }
+}
+async function skipSetup() {
+  if (setupBusy.value) return
+  setupBusy.value = true
+  try { setupStatus.value = await api<SetupStatus>('/setup/skip', { method: 'POST' }); setupVisible.value = false }
+  catch { setupStatus.value = null; setupVisible.value = false }
+  finally { setupBusy.value = false }
+}
+function openSetup() { setupVisible.value = true; void refreshSetup() }
+function formatGB(bytes: number | null | undefined) { return bytes == null ? '—' : `${(bytes / 1_000_000_000).toFixed(1)} GB` }
+
 let session = 0
 let typingTimer: ReturnType<typeof setTimeout> | undefined
 const text = computed(() => language.value === 'es' ? es : en)
@@ -35,13 +75,14 @@ useHead(() => ({ htmlAttrs: { lang: language.value } }))
 
 onMounted(() => {
   try { saved.value = readSave(localStorage.getItem(SAVE_KEY)) } catch { saved.value = null }
+  void checkFirstLaunch()
 })
 watch(game, value => {
   if (!value) return
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(value)); saved.value = value } catch { saveAvailable.value = false }
 }, { deep: true })
 watch(language, value => { if (game.value) game.value.language = value })
-onBeforeUnmount(() => { session++; if (typingTimer) clearTimeout(typingTimer); void audio.stop() })
+onBeforeUnmount(() => { mounted = false; session++; if (typingTimer) clearTimeout(typingTimer); if (setupTimer) clearTimeout(setupTimer); void audio.stop() })
 watch(volume, value => audio.setVolume(value))
 async function toggleSound() {
   if (soundBusy.value) return
@@ -122,8 +163,15 @@ function title() { session++; busy.value = false; if (typingTimer) clearTimeout(
     </header>
     <p v-if="soundError" class="notice" role="status">{{ text.sound_error }}</p>
     <div v-if="showCredits" class="notice"><p>{{ text.credits_text }}</p><button type="button" @click="showCredits = false">{{ text.close }}</button></div>
-    <section v-if="!game" class="title-screen">
-      <div class="title-card"><p class="eyebrow">{{ text.subtitle }}</p><h1>{{ text.title }}</h1><p>{{ text.description }}</p><div class="actions"><button type="button" @click="start">{{ text.start }}</button><button v-if="saved" type="button" class="secondary" @click="resume">{{ text.resume }}</button></div></div>
+    <section v-if="!game && setupVisible" class="story-card setup-card">
+      <p class="eyebrow">{{ text.subtitle }}</p><h1>{{ text.setup_title }}</h1><p>{{ text.setup_intro }}</p><p>{{ text.setup_privacy }}</p>
+      <template v-if="setupStatus"><h2>{{ text.setup_model }}</h2><p>{{ setupStatus.models[0]?.name }}</p><p>{{ text.setup_cost }}: {{ formatGB(setupStatus.models[0]?.download_bytes) }} · {{ text.setup_license }}: {{ setupStatus.models[0]?.license }}</p><p>{{ text.setup_memory }}: {{ formatGB(setupStatus.memory_available) }} · {{ text.setup_disk }}: {{ formatGB(setupStatus.disk_available) }}</p>
+      <p v-if="setupStatus.state === 'downloading'" role="status">{{ text.setup_downloading }} <span v-if="setupStatus.total">{{ formatGB(setupStatus.completed) }} / {{ formatGB(setupStatus.total) }}</span></p><progress v-if="setupStatus.state === 'downloading' && setupStatus.total" :value="setupStatus.completed" :max="setupStatus.total" />
+      <p v-if="setupStatus.state === 'checking'" role="status">{{ text.setup_checking }}</p><p v-if="setupStatus.state === 'ready'" role="status">{{ text.setup_ready }}</p><p v-if="setupStatus.state === 'failed'" role="alert">{{ setupStatus.error === 'insufficient_disk' ? text.setup_disk_error : text.setup_failed }}</p>
+      <div class="actions"><template v-if="setupStatus.state === 'ready'"><button type="button" @click="setupVisible = false">{{ text.setup_continue }}</button><button type="button" class="secondary" :disabled="setupBusy" @click="skipSetup">{{ text.setup_skip }}</button></template><template v-else><button type="button" :disabled="setupBusy || setupStatus.state === 'downloading' || setupStatus.state === 'checking'" @click="startSetup">{{ text.setup_download }}</button><button type="button" class="secondary" :disabled="setupBusy || setupStatus.state === 'downloading' || setupStatus.state === 'checking'" @click="skipSetup">{{ text.setup_skip }}</button></template></div></template><button v-else type="button" @click="setupVisible = false">{{ text.setup_skip }}</button>
+    </section>
+    <section v-else-if="!game" class="title-screen">
+      <div class="title-card"><p class="eyebrow">{{ text.subtitle }}</p><h1>{{ text.title }}</h1><p>{{ text.description }}</p><div class="actions"><button type="button" :disabled="checkingSetup" @click="start">{{ checkingSetup ? text.setup_wait : text.start }}</button><button v-if="saved" type="button" class="secondary" :disabled="checkingSetup" @click="resume">{{ text.resume }}</button><button v-if="setupStatus" type="button" class="secondary" @click="openSetup">{{ text.setup_settings }}</button></div></div>
     </section>
     <section v-else-if="game.phase === 'opening'" class="story-card"><img src="/art/title.webp" alt=""><p>{{ lines.opening[language] }}</p><button type="button" @click="game.phase = 'playing'">{{ text.continue_ }}</button></section>
     <section v-else-if="game.phase === 'memory' && memory" class="story-card"><img :src="`/art/${memory.memory.id}.webp`" alt=""><p v-if="reply" role="status" class="reply">{{ reply }}</p><p class="eyebrow">{{ text.memory }}</p><h1>{{ memory.memory.title[language] }}</h1><p>{{ memory.memory.scene[language] }}</p><button type="button" @click="continueMemory">{{ text.continue_ }}</button></section>

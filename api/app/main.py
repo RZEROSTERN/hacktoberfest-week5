@@ -15,6 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.config import Settings
 from app.dialogue import interpret
 from app.model_lifecycle import PreparedModel, prepare_model
+from app.setup import SetupManager
 from app.story import Story, load_story
 
 
@@ -24,6 +25,37 @@ class Health(BaseModel):
 
 class Readiness(BaseModel):
     mode: Literal["ready", "fallback"]
+
+
+class SetupRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    model: str = Field(min_length=1, max_length=200)
+    consent: Literal[True]
+
+
+class ModelInfo(BaseModel):
+    tag: str
+    name: str
+    license: str
+    source: str
+    tested_digest: str
+    download_bytes: int
+    context_tokens: int
+    thinking: bool
+    requires_preparation: bool
+    benchmark: str
+
+
+class SetupStatus(BaseModel):
+    setup_complete: bool
+    selected_model: str | None
+    state: Literal["idle", "downloading", "checking", "ready", "failed"]
+    completed: int
+    total: int
+    error: str | None
+    models: list[ModelInfo]
+    memory_available: int
+    disk_available: int | None
 
 
 class DialogueRequest(BaseModel):
@@ -61,6 +93,11 @@ def create_app(settings: Settings) -> FastAPI:
     app.state.settings = settings
     app.state.prepared = None
     app.state.inference_lock = Lock()
+    root = resource_root()
+    prompts = root / "prompts" if getattr(sys, "frozen", False) else root / "api" / "prompts"
+    app.state.setup = SetupManager(
+        settings.data_dir, settings.ollama_url, root, prompts, app.state.inference_lock
+    )
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
@@ -72,6 +109,25 @@ def create_app(settings: Settings) -> FastAPI:
     def health() -> Health:
         """Report process readiness without loading or contacting a model."""
         return Health()
+
+    @app.get("/setup/status", response_model=SetupStatus, operation_id="setup_status")
+    def setup_status() -> dict[str, object]:
+        """Return setup progress, local resources and the recommended catalog."""
+        return dict(app.state.setup.snapshot())
+
+    @app.post("/setup/skip", response_model=SetupStatus, operation_id="setup_skip")
+    def setup_skip() -> dict[str, object]:
+        """Choose authored fallback mode without downloading a model."""
+        if not app.state.setup.skip():
+            raise HTTPException(status_code=409, detail="Setup is busy")
+        return dict(app.state.setup.snapshot())
+
+    @app.post("/setup/start", response_model=SetupStatus, operation_id="setup_start")
+    def setup_start(request: SetupRequest) -> dict[str, object]:
+        """With explicit consent, install and check a recommended model."""
+        if not app.state.setup.start(request.model):
+            raise HTTPException(status_code=409, detail="Unknown model or setup is busy")
+        return dict(app.state.setup.snapshot())
 
     @app.post("/prepare", response_model=Readiness, operation_id="prepare")
     def prepare() -> Readiness:

@@ -320,3 +320,21 @@ Procedural Web Audio is opt-in from an explicit player gesture, with an off
 control and volume slider. The audio context closes when switched off or when
 the view is destroyed. A browser check verified the context reaches running and
 closed states; actual listening and playtesting remain human checks.
+
+## 2026-10-27 — First-launch model setup
+
+The wizard reads its recommended model and download size from the benchmarked
+catalog, shows local memory and disk information, and never starts a download
+until the player explicitly chooses it. Players may instead persist fallback
+mode and change that choice from the title screen. An already installed model
+is reused. The download uses the bundled loopback Ollama engine and reports its
+layer progress; insufficient disk and failures leave fallback mode available.
+
+The model is prepared and exercises the same classifier and authored-reply
+selection before its tag is saved atomically to local settings. Downloads and
+inference share one lock. The process only reads local settings and does not
+request an account or credentials. A local HTTP stand-in exercised consent,
+download and failure paths; a separate browser check verified the installed
+model and actual compatibility path. A separate browser interaction went from
+model preparation through relevance classification to a recovered memory. A
+fresh network download and other OS hardware still need installer testing.

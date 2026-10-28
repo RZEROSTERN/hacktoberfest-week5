@@ -52,7 +52,7 @@ in the process-tree peak. Each model stays loaded across a 35-second idle probe,
 longer than the previous 30-second keep-alive. The next real reply is timed too.
 The API helper uses Ollama's documented empty-request preload and keep_alive=-1
 ([official FAQ](https://docs.ollama.com/faq)); explicit unload/owned-tree cleanup
-still runs on close. Download consent and readiness UI are later steps.
+still runs on close. The first-launch wizard now handles download consent and readiness in the game.
 The earlier cold-interaction run remains in
 [BENCHMARKS_BOUNDED_COLD.md](BENCHMARKS_BOUNDED_COLD.md),
 with source revision 7d468fe. Preparing is a startup orchestration fix, not

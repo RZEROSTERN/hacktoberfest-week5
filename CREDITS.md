@@ -43,5 +43,4 @@ copied from the model manifest. Weights are not bundled and require explicit
 download consent. All inference is local to the player's computer.
 
 No external sound files are included. `web/app/utils/ambient-audio.ts` generates
-a quiet breeze and simple musical tones with the Web Audio API. It will be wired
-to player-controlled sound settings during the atmosphere step.
+a quiet breeze and simple musical tones with the Web Audio API. The player can enable it and adjust its volume in the game.

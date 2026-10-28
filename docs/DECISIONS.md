@@ -349,3 +349,13 @@ local macOS arm64 DMG and its packaged services passed these checks; its size
 and digest are recorded in BUILD_SIZES.md. The macOS, Windows and Linux CI matrix also passed built and packaged smoke
 checks; all four installer sizes and hashes are recorded in BUILD_SIZES.md.
 Human installation and playtesting remain separate evidence to collect.
+
+## 2026-10-27 — Player and contributor documentation
+
+The README describes the game's premise without revealing its memories, shows
+screenshots and a short gameplay capture, and documents installation, consent,
+offline operation, the authored-output boundary, benchmark limitations and the
+open-source rationale. It identifies unsigned or non-notarized packages and
+links to platform guidance. Captures are from the running local game; playtest
+claims remain explicitly pending. Credits and benchmark status now reflect the
+implemented sound and setup controls.

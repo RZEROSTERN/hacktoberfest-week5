@@ -346,5 +346,6 @@ authored fallback dialogue, representative illustrations and bundled font in
 addition to starting Ollama and the API. Its disposable extraction and smoke
 directories live under the repository's ignored development directory. The
 local macOS arm64 DMG and its packaged services passed these checks; its size
-and digest are recorded in BUILD_SIZES.md. Human installation and playtesting,
-and the Windows and Linux matrix, are separate evidence still to collect.
+and digest are recorded in BUILD_SIZES.md. The macOS, Windows and Linux CI matrix also passed built and packaged smoke
+checks; all four installer sizes and hashes are recorded in BUILD_SIZES.md.
+Human installation and playtesting remain separate evidence to collect.

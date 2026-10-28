@@ -104,3 +104,168 @@ checked scaffold. No architecture or runtime behavior changes in this step.
 The owner approved the full bilingual draft in this session and authorized
 continuing development. canon.json now records approved status; the story
 text is unchanged. The story PR can proceed before the model-spike branch.
+
+## 2026-10-27 — Local model spike methodology
+
+- **One combined structured response.** The model returns relevance, a short
+  spirit reply and visible fact IDs in one request. This avoids two sequential
+  inference passes while keeping progression in deterministic code. A fact ID
+  is not proof that the accompanying prose is supported.
+- **Restrict the schema to visible facts.** Calibration found the model could
+  write valid JSON with invented fact IDs. Constraining the schema's ID enum
+  fixes that structural problem; it does not solve semantic hallucinations.
+  The interrupted calibration evidence is preserved separately from the final run.
+- **Fixed, bilingual cases.** Each of six objects has eight relevant, six
+  irrelevant and six adversarial messages, with ten cases per language. Expected
+  labels precede inference. Locked and recovered contexts are both exercised.
+- **Measure the player-safe boundary too.** Raw first fragments often contain
+  JSON syntax. The prototype buffers text until validation, retries once, then
+  falls back. Both raw timing and complete validated-display latency are recorded.
+- **Charge the model's full process tree.** Reuse Slothshot's sampler concept but
+  scope it to the owned engine PID and descendants, avoiding a system engine.
+  On macOS, sample physical footprint with proc_pid_rusage/rusage_info_v2 as
+  defined in Apple's installed SDK. RSS and Ollama's own reported allocation
+  substantially understated this run's memory cost. Keep all metrics separately.
+- **Reuse weights without touching the source.** Existing manifests and blobs
+  were copied into .dev/spike-models and every copied blob checked by SHA-256.
+  The bundled engine gets its own home, ports, low priority and process cleanup.
+  A rerun on another computer needs explicit --allow-download consent for missing
+  weights. No model download or inference is performed in CI.
+- **Audit semantics separately.** The final rule prototype catches 40 injected
+  bilingual contradictions and preserves 12 authored controls, but raw-output
+  review also checks unsupported history, premature revelations, and false
+  rejections. A finite passing mutation suite cannot certify arbitrary prose.
+- **No inference endpoint yet.** The spike adds a reusable loopback-only client
+  and an unshipped validation prototype. It changes no public API contract.
+  A simulated service cannot establish real model latency, memory or quality;
+  the benchmark deliberately uses the real bundled local engine instead.
+
+### Spike outcome — stop before the PR
+
+Both models completed the same 120-case corpus. E2B classified 116/120 correctly
+(96.7%); E4B classified 120/120 (100%). Their peak engine-tree macOS physical
+footprints were 5.98 GB and 9.63 GB, respectively, versus a 3 GB engine ceiling
+and a 4 GB whole-game ceiling. RSS alone (2.99 GB and 4.88 GB) would misrepresent
+the resource cost, especially for E2B.
+
+The finite validator mutation set passes 40/40, with zero false rejections among
+12 authored controls. Reviewing all 242 generated candidates nevertheless found
+unsupported or premature history and indirect attribution of a canonical event
+to the player. It also exposed a Spanish false positive: era un momento/gesto
+was mistaken for an occupation. This prototype cannot be called canon-safe.
+
+No default is selected, no model-spike PR is opened, and no art/game-core step
+is started. The owner must choose how to address the failed targets. The
+recommended option keeps the resource budget and compares smaller local models;
+a text-only Gemma 4 variant or revised requirements are alternatives, not
+assumptions. Complete timings, raw evidence, audit limitations and reproducible
+commands are in docs/BENCHMARKS.md and spike/README.md.
+
+## 2026-10-27 — Approved smaller-model follow-up
+
+The owner approved comparing Gemma 3 1B and Qwen 3.5 0.8B while keeping the
+original memory, latency, classification and canon requirements. Downloads went
+only to the repository's isolated .dev/spike-models store with explicit consent.
+No global install, cloud inference, system engine or runtime default was added.
+
+- **Split classification from voice for the smaller models.** The combined-call
+  pilot confused relevance with the spirit's forgotten knowledge. A dedicated
+  classifier improved the decision task. Its time counts toward every voice
+  latency metric; the voice's redundant boolean cannot replace its decision.
+- **Use capability-aware thinking controls.** Omit think for text-only Gemma 3;
+  disable it for Qwen where supported. The runner records capabilities/options,
+  the model digest and measured source hashes for reproduction.
+- **Preserve calibration and unchanged labels.** The first 20-case split pilot
+  scored 45% / 75%; a clearer JSON contract, quoted player data and generic
+  examples on different objects improved the next pilot to 90% / 85%. Both
+  pilots remain in spike/results. Because those cases also occur in the full
+  corpus, this is a development result, not independent holdout accuracy.
+- **Turn original escapes into regressions, without claiming complete safety.**
+  The expanded validator set catches 48/48 false statements and rejects none of
+  16 valid controls. It adds known shared-history/premature-memory failures and
+  fixes the Spanish era un momento/gesto false positive. Conservative free-text
+  checks still overreject supported references and miss indirect false claims.
+- **Keep historical evidence intact.** Original Gemma 4 measurements and audit
+  retain their source hashes and revision 3858576. Their report now lives in
+  docs/BENCHMARKS_GEMMA4.md; docs/BENCHMARKS.md presents the follow-up. Each
+  report has its own generator. This run freezes the v2 voice/v3 classifier.
+
+### Follow-up outcome — stop before the PR again
+
+Both models completed all 120 unchanged cases. Gemma 3 scored 103/120 (85.8%)
+with conservative peak engine memory 1.294 GB; Qwen scored 105/120 (87.5%) at
+2.119 GB. Warm raw voice TTFT p95 was 1.01 / 1.86 s and raw full reply p95
+2.48 / 2.34 s. Safe display p95 was 3.39 / 2.48 s; Qwen's cold TTFT was 3.46 s
+and its warm worst-case raw TTFT/full/safe delay was 5.91 / 6.44 / 7.64 s.
+These tails are reported rather than silently redefining the targets as means.
+
+Codex reviewed all 283 raw candidates (not an independent human verification).
+The qualitative audit flags 48 / 40 canon issues, including unsupported fixed
+object/scene details: 29 / 22 were blocked, leaving 19 / 18 escapes. Gemma 3
+substitutes Berta for Aurelio's radio lesson and invents new life habits. Qwen
+denies recovered identity and invents a favorite football team. Both also break
+character, and conservative rules falsely reject some supported family wording.
+This clearly fails the canon requirement despite passing the finite mutation set.
+
+No default, spike PR or subsequent feature branch is created. The recommended
+next option is local AI classification plus selection from authored, state-scoped
+reply IDs, with code resolving all displayed text. That preserves free player
+input and local semantic interpretation, but changes open-ended voice generation
+and therefore needs owner approval. The alternative is another text-only model/
+backend spike with stronger validation; no new model is assumed to qualify.
+
+## 2026-10-27 — Owner-approved authored reply selection
+
+The owner approved the recommended reply-selection approach (LGTM) and asked to
+continue. Runtime now classifies the free player message, then chooses an ID from
+two authored replies permitted for the selected object/recovery/relevance state.
+No generated prose is displayed. The existing approved content supplies every
+line; the biography and scenes are unchanged. Strict whole-response validation
+rejects extra fields/prose and unavailable IDs, retries once, then uses an authored
+fallback. Historical free-prose clients/validators remain only as spike evidence.
+
+The full comparison uses the original 120 cases and 120 new bilingual cases
+written before inference, including partially recovered states. Gemma 3 scores
+85.8% / 83.3% on original/new cases; Qwen scores 87.5% / 90.8%. All 480 resolved
+outputs replay exactly to their legal authored text. The boundary rejects all
+1,152 false-prose injections beside legal IDs, with 96 legal controls accepted.
+This is structural output confinement, not perfect semantic classification.
+
+The first bounded run measures cold loading as part of the first interaction:
+Qwen needs 3.04 s for safe first text, versus about 0.41 s warmed. It otherwise
+meets classification and memory targets (1.86 GB). Gemma fits at 1.07 GB but falls
+below accuracy on the new cases. No PR/default is selected from this cold run.
+
+The next orchestration fix is an explicit preparation phase before accepting
+player messages: preload the selected local model, keep it resident during this
+short game, and unload on close. Startup cost must be reported separately and
+its memory charged to the budget. The actual preparation helper will be measured;
+game/wizard work must gate input on readiness rather than silently moving the
+same cold delay onto the first player message. All interactive targets remain.
+
+### Prepared-play outcome — spike qualifies
+
+The preparation helper uses the documented empty /api/generate preload with
+keep_alive=-1; classifier and selector calls also retain the model. The owned
+engine is still explicitly unloaded and stopped on close. A 35-second pause
+after the first interaction verifies residency beyond the previous 30-second
+keep-alive, with the following reply timed normally. Process-tree memory sampling
+includes preparation and idle time. Reference: https://docs.ollama.com/faq.
+
+Qwen 3.5 0.8B is the recommended default. Its unchanged classifier scores
+105/120 (87.5%) original and 109/120 (90.8%) new cases. All 240 prepared replies
+finish safely within 0.55 s, including both inference calls, validation and text
+resolution; warm safe-display p95 is 0.45 s. Peak engine memory is 1.85 GB.
+Startup preparation takes 2.61 s and is reported separately. No generated prose
+escapes the authored boundary, all 1,152 injected-prose cases are blocked and 96
+legal controls pass. Both tested models remain loaded across the idle probe and
+their owned process trees stop after the run. Gemma 3 remains ineligible because
+new-corpus accuracy is 83.3%, below the unchanged 85% threshold.
+
+content/models.json records the tested Qwen digest, size, license, context and
+preparation requirement for the later wizard. Runtime must read the player's
+local model selection; the catalog is a recommendation, not an implicit download.
+Game input must wait for successful preparation or explicitly enter authored
+fallback mode. The wizard/readiness UI, whole-game <=4 GB measurement, Windows/
+Mint benchmarks and installers remain later build steps. The cold-interaction
+baseline is preserved at revision 7d468fe and in BENCHMARKS_BOUNDED_COLD.md.

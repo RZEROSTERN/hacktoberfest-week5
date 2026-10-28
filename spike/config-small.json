@@ -1,0 +1,20 @@
+{
+  "models": [
+    "gemma3:1b",
+    "qwen3.5:0.8b"
+  ],
+  "num_ctx": 4096,
+  "num_predict": 128,
+  "temperature": 0,
+  "seed": 42,
+  "timeout_s": 60,
+  "prompt_file": "api/prompts/spirit.spike.v2.txt",
+  "separate_classification": true,
+  "sources": [
+    "https://ollama.com/library/gemma3:1b",
+    "https://ollama.com/library/qwen3.5:0.8b"
+  ],
+  "verified_on": "2026-10-27",
+  "validator_fixture": "spike/validator_cases.v2.json",
+  "classifier_prompt_file": "api/prompts/relevance.spike.v3.txt"
+}

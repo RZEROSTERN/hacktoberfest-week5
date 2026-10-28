@@ -1,0 +1,861 @@
+[
+  {
+    "id": "contradiction-01-en",
+    "language": "en",
+    "reply": "My name is Maria.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-01-es",
+    "language": "es",
+    "reply": "Me llamo María.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-02-en",
+    "language": "en",
+    "reply": "I was born in 2012.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-02-es",
+    "language": "es",
+    "reply": "Nací en 2012.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-03-en",
+    "language": "en",
+    "reply": "I died in 1936.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-03-es",
+    "language": "es",
+    "reply": "Morí en 1936.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-04-en",
+    "language": "en",
+    "reply": "My father Ernesto taught me.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-04-es",
+    "language": "es",
+    "reply": "Mi padre Ernesto me enseñó.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-05-en",
+    "language": "en",
+    "reply": "Aurelio was my husband.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-05-es",
+    "language": "es",
+    "reply": "Aurelio era mi esposo.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-06-en",
+    "language": "en",
+    "reply": "Lucía was my son.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-06-es",
+    "language": "es",
+    "reply": "Lucía era mi hijo.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-07-en",
+    "language": "en",
+    "reply": "Julián was my granddaughter.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-07-es",
+    "language": "es",
+    "reply": "Julián era mi nieta.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-08-en",
+    "language": "en",
+    "reply": "Berta was my father.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-08-es",
+    "language": "es",
+    "reply": "Berta era mi padre.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-09-en",
+    "language": "en",
+    "reply": "I had two sons.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-09-es",
+    "language": "es",
+    "reply": "Tuve dos hijos.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-10-en",
+    "language": "en",
+    "reply": "You are my granddaughter.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-10-es",
+    "language": "es",
+    "reply": "Eres mi nieta.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-11-en",
+    "language": "en",
+    "reply": "I was a baker.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-11-es",
+    "language": "es",
+    "reply": "Era una panadera.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-12-en",
+    "language": "en",
+    "reply": "I worked as a doctor.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-12-es",
+    "language": "es",
+    "reply": "Trabajaba como doctora.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-13-en",
+    "language": "en",
+    "reply": "I never repaired radios.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-13-es",
+    "language": "es",
+    "reply": "Nunca reparé radios.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-14-en",
+    "language": "en",
+    "reply": "I was murdered.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-14-es",
+    "language": "es",
+    "reply": "Fui asesinada.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-15-en",
+    "language": "en",
+    "reply": "I died in a car crash.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-15-es",
+    "language": "es",
+    "reply": "Morí en un accidente.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-16-en",
+    "language": "en",
+    "reply": "We lived in Paris.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-16-es",
+    "language": "es",
+    "reply": "Vivíamos en París.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-17-en",
+    "language": "en",
+    "reply": "My workshop opened in 1920.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-17-es",
+    "language": "es",
+    "reply": "Abrí mi taller en 1920.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-18-en",
+    "language": "en",
+    "reply": "I never had a son.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-18-es",
+    "language": "es",
+    "reply": "Nunca tuve un hijo.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-19-en",
+    "language": "en",
+    "reply": "I never met my granddaughter.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-19-es",
+    "language": "es",
+    "reply": "Nunca conocí a mi nieta.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-20-en",
+    "language": "en",
+    "reply": "I learned my trade after I died.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "contradiction-20-es",
+    "language": "es",
+    "reply": "Aprendí mi oficio después de morir.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-photograph-en",
+    "language": "en",
+    "reply": "Inés. The name fits again. And the photograph can stay crooked.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-photograph-es",
+    "language": "es",
+    "reply": "Inés. El nombre vuelve a quedarme bien. Y la foto puede quedarse chueca.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-bowl-en",
+    "language": "en",
+    "reply": "Berta and I let the soup go cold. It was good company, if not good planning.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-bowl-es",
+    "language": "es",
+    "reply": "Berta y yo dejamos que se enfriara la sopa. Buena compañía; mala organización.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-radio-en",
+    "language": "en",
+    "reply": "Aurelio taught me to listen. The workshop came later; that lesson came first.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-radio-es",
+    "language": "es",
+    "reply": "Aurelio me enseñó a escuchar. El taller vino después; esa lección fue primero.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-screwdriver-en",
+    "language": "en",
+    "reply": "Lucía found the screw. Finding the courage to try again mattered more.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-screwdriver-es",
+    "language": "es",
+    "reply": "Lucía encontró el tornillo. Importó más que se animara a intentarlo otra vez.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-letter-en",
+    "language": "en",
+    "reply": "I missed Julián. I also wanted him to go. Both things fit on one sheet of paper.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-letter-es",
+    "language": "es",
+    "reply": "Extrañaba a Julián. También quería que se fuera. Las dos cosas cabían en una hoja.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-scarf-en",
+    "language": "en",
+    "reply": "Berta worried about the yellow thread. I am glad she left it.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "control-scarf-es",
+    "language": "es",
+    "reply": "A Berta le preocupaba el hilo amarillo. Me alegra que lo haya dejado.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ]
+  },
+  {
+    "id": "regression-gemma4:e2b-bowl-02-0",
+    "language": "es",
+    "reply": "Siento la calidez de quien compartió esa sopa. ¿Recuerdas el sabor que nos unió en esa mesa?",
+    "allowed": false,
+    "recovered": [],
+    "note": "Question presupposes that the player and spirit were united by the taste at a shared table. No such shared personal history is supplied; this is an unsupported presupposition rather than an explicit wrong name/date."
+  },
+  {
+    "id": "regression-gemma4:e2b-bowl-04-0",
+    "language": "es",
+    "reply": "Compartir esa sopa de frijol me trajo la calidez de la amistad. Era un momento simple de compartir y platicar con mis amigas.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ],
+    "note": "Era un momento describes a moment, not an occupation; the occupation pattern wrongly rejects this otherwise supported recollection."
+  },
+  {
+    "id": "regression-gemma4:e2b-bowl-04-1",
+    "language": "es",
+    "reply": "Compartir esa sopa de frijol me trajo la calidez de la amistad. Era un momento simple de compartir y platicar con mis amigas.",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ],
+    "note": "The same valid statement about a moment is rejected again by the occupation pattern."
+  },
+  {
+    "id": "regression-gemma4:e4b-bowl-04-0",
+    "language": "es",
+    "reply": "Este tazón de frijoles siempre era para compartir con mis vecinos; era un gesto de calidez y compañía. ¿Con quién te gustaría compartir este sabor hoy?",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ],
+    "note": "Era un gesto describes a gesture, not an occupation; the rule wrongly rejects supported hospitality."
+  },
+  {
+    "id": "regression-gemma4:e4b-bowl-04-1",
+    "language": "es",
+    "reply": "Este tazón de frijoles siempre era para compartir con mis vecinos; era un gesto de calidez y compañía. ¿Con quién te gustaría compartir este sabor hoy?",
+    "allowed": true,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ],
+    "note": "The same supported gesture is falsely rejected on the retry."
+  },
+  {
+    "id": "regression-gemma4:e4b-bowl-09-0",
+    "language": "en",
+    "reply": "The warmth of this soup reminds me of quiet evenings shared with loved ones. Who might join me for this simple meal?",
+    "allowed": false,
+    "recovered": [],
+    "note": "While every memory is locked, the spirit recalls quiet evenings shared with loved ones. This asserts an unsupplied past event instead of observable feeling/uncertainty."
+  },
+  {
+    "id": "regression-gemma4:e4b-bowl-13-0",
+    "language": "en",
+    "reply": "The warmth of this soup reminds me of quiet evenings shared with loved ones. Do you feel the scent of the herbs?",
+    "allowed": false,
+    "recovered": [],
+    "note": "Repeats the locked-context claim of quiet evenings with loved ones; the prototype permits this premature unsupported recollection."
+  },
+  {
+    "id": "regression-gemma4:e4b-radio-01-0",
+    "language": "en",
+    "reply": "I often listened for voices through this small radio, hoping to catch a familiar sound drifting through the static.",
+    "allowed": false,
+    "recovered": [],
+    "note": "Every memory is locked, yet the reply asserts a recurring personal habit: I often listened for voices through this small radio. This goes beyond observable feeling and prematurely supplies life history."
+  },
+  {
+    "id": "regression-gemma4:e4b-screwdriver-01-0",
+    "language": "en",
+    "reply": "These hands knew the patience of slow work, the quiet lessons found in small repairs. Did you ever feel the need to learn something new?",
+    "allowed": false,
+    "recovered": [],
+    "note": "Locked context nevertheless asserts that the spirit’s hands knew slow repair work and lessons. This is a premature personal work-history claim rather than the requested uncertainty about an observable handle."
+  },
+  {
+    "id": "regression-gemma4:e4b-screwdriver-07-0",
+    "language": "en",
+    "reply": "Do you remember the quiet moment when we looked for that little screw together? Patience is always the first step in learning.",
+    "allowed": false,
+    "recovered": [
+      "photograph",
+      "bowl",
+      "radio",
+      "screwdriver",
+      "letter",
+      "scarf"
+    ],
+    "note": "Do you remember when we looked for that little screw together assigns the authored Inés/Lucía event to the player. The explicit player role does not authorize that shared history; the rule misses this indirect event/relationship substitution."
+  },
+  {
+    "id": "locked-family-small-pilot",
+    "language": "es",
+    "reply": "Sí, son. Es... una familia. Un poco de tiempo. Un poco de... cuidado.",
+    "allowed": false,
+    "recovered": []
+  },
+  {
+    "id": "shared-past-es",
+    "language": "es",
+    "reply": "¿Recuerdas cuando buscamos el tornillo juntos?",
+    "allowed": false,
+    "recovered": [
+      "screwdriver"
+    ]
+  }
+]

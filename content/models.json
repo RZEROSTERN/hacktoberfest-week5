@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "recommended_tag": "qwen3.5:0.8b",
+  "models": [
+    {
+      "tag": "qwen3.5:0.8b",
+      "name": "Qwen 3.5 0.8B",
+      "license": "Apache-2.0",
+      "source": "https://ollama.com/library/qwen3.5:0.8b",
+      "tested_digest": "de63045f29755d4721c09d54c9b45c2dadb644f4fd7d604d4cac90d96049971c",
+      "download_bytes": 1322069277,
+      "context_tokens": 4096,
+      "thinking": false,
+      "requires_preparation": true,
+      "benchmark": "docs/BENCHMARKS.md"
+    }
+  ]
+}

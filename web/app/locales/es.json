@@ -34,5 +34,9 @@
   "preparing": "Preparando al espíritu local…",
   "ready": "El espíritu está listo para escuchar.",
   "unavailable_save": "No se puede guardar en este dispositivo.",
-  "skip_model": "Continuar sin el modelo"
+  "skip_model": "Continuar sin el modelo",
+  "sound_on": "Activar ambiente",
+  "sound_off": "Desactivar ambiente",
+  "volume": "Volumen del ambiente",
+  "sound_error": "El sonido no está disponible en este dispositivo."
 }

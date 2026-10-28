@@ -307,3 +307,16 @@ When AI classification is unavailable, the player explicitly reflects on
 whether their thought connects to the object, so a model failure cannot block
 memory recovery or any ending. Players can also choose fallback during model
 preparation. The later wizard will provide the selection and consent flow.
+
+## 2026-10-27 — Atmosphere and player-controlled sound
+
+Candle glow, drifting petals and smoke are lightweight CSS effects over the
+illustrated scene; pointer movement adds a small parallax offset. The spirit's
+four authored states become progressively more visible, while a candle and
+accessible progress indicator track the remaining conversations. Reduced-motion
+preferences disable the animation and pointer offset.
+
+Procedural Web Audio is opt-in from an explicit player gesture, with an off
+control and volume slider. The audio context closes when switched off or when
+the view is destroyed. A browser check verified the context reaches running and
+closed states; actual listening and playtesting remain human checks.

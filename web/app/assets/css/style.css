@@ -51,4 +51,19 @@ p { line-height: 1.55; }
 .reply { padding: 1rem; border-left: 3px solid #f2a12c; background: #28223e; }
 .save-note { color: #d7c7d8; font-size: .9rem; }
 @media (max-width: 850px) { .game-layout { grid-template-columns: 1fr; } .scene { position: relative; } .story-card { margin: 1rem; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+.toolbar { flex-wrap: wrap; }
+.toolbar input[type='range'] { width: 6rem; accent-color: #f6c56c; }
+.scene > img:not(.spirit) { transform: translate(var(--shift-x), var(--shift-y)) scale(1.015); transition: transform .25s ease-out; }
+.scene > img.spirit { transition: opacity 1s ease, transform .25s ease-out; transform: translate(var(--shift-x), var(--shift-y)); }
+.atmosphere { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.flame { position: absolute; width: 1.2%; height: 4%; border-radius: 60% 40% 60% 40%; background: #fff2c1; box-shadow: 0 0 12px 5px #ffbd45aa; animation: flicker 1.8s ease-in-out infinite alternate; }
+.flame-1 { left: 12%; top: 47%; } .flame-2 { left: 84%; top: 56%; animation-delay: -.6s; } .flame-3 { left: 32%; top: 78%; animation-delay: -1s; }
+.petal { position: absolute; width: .8%; height: 1.4%; border-radius: 100% 0 100% 0; background: #f2a12c; left: calc(var(--petal-index) * 11%); top: -3%; opacity: 0; animation: petal-drift 18s linear infinite; animation-delay: calc(var(--petal-index) * -2.3s); }
+.smoke { position: absolute; left: 69%; top: 39%; width: 3%; height: 13%; border-radius: 50%; background: #e8dfc233; filter: blur(6px); animation: smoke-rise 5s ease-out infinite; }
+.candle-clock { position: relative; height: 3rem; width: 1.2rem; margin: .2rem .3rem 0; }
+.candle-clock-body { position: absolute; bottom: 0; width: 100%; background: linear-gradient(90deg, #b98d56, #fff1d2 55%, #d8ab70); border-radius: .2rem .2rem 0 0; transition: height .6s; }
+.candle-clock-flame { position: absolute; bottom: 100%; left: 35%; height: .8rem; width: .4rem; border-radius: 80% 20% 80% 20%; background: #ffe3a1; box-shadow: 0 0 .6rem #f2a12c; animation: flicker 1.8s infinite alternate; }
+@keyframes flicker { from { opacity: .65; transform: scale(.8) rotate(-5deg); } to { opacity: 1; transform: scale(1.12) rotate(5deg); } }
+@keyframes petal-drift { 0% { opacity: 0; transform: translate(0, 0) rotate(0); } 10% { opacity: .8; } 90% { opacity: .8; } 100% { opacity: 0; transform: translate(45px, 500px) rotate(360deg); } }
+@keyframes smoke-rise { from { opacity: 0; transform: translateY(0) scale(.7); } 30% { opacity: .7; } to { opacity: 0; transform: translateY(-100%) scale(1.5); } }

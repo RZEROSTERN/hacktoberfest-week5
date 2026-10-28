@@ -34,5 +34,9 @@
   "preparing": "Preparing the local spirit…",
   "ready": "The spirit is ready to listen.",
   "unavailable_save": "Saving is unavailable on this device.",
-  "skip_model": "Continue without the model"
+  "skip_model": "Continue without the model",
+  "sound_on": "Turn ambience on",
+  "sound_off": "Turn ambience off",
+  "volume": "Ambience volume",
+  "sound_error": "Sound is unavailable on this device."
 }

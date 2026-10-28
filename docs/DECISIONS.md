@@ -359,3 +359,14 @@ open-source rationale. It identifies unsigned or non-notarized packages and
 links to platform guidance. Captures are from the running local game; playtest
 claims remain explicitly pending. Credits and benchmark status now reflect the
 implemented sound and setup controls.
+
+## 2026-10-27 — Release candidate and secret checks
+
+Version the desktop app, Python package and local API contract together at
+1.0.0; the tag is checked against these versions before the draft release.
+The preceding 0.1.0 Git history and extracted application code, authored content
+and web assets from the macOS bundle and Windows, deb and AppImage CI packages
+were scanned with checksum-verified Gitleaks 8.30.1 with no matches. This is a
+pattern-based check, not proof that no secret can exist; repeat it on the final
+release candidates and inspect the generated draft assets. Runtime model
+weights and user data are not bundled in the installers.

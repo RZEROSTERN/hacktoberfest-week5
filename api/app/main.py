@@ -89,7 +89,7 @@ def selected_model(directory: Path) -> str | None:
 
 
 def create_app(settings: Settings) -> FastAPI:
-    app = FastAPI(title="The Last Candle local API", version="0.1.0")
+    app = FastAPI(title="The Last Candle local API", version="1.0.0")
     app.state.settings = settings
     app.state.prepared = None
     app.state.inference_lock = Lock()

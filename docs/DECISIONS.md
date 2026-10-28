@@ -269,3 +269,24 @@ Game input must wait for successful preparation or explicitly enter authored
 fallback mode. The wizard/readiness UI, whole-game <=4 GB measurement, Windows/
 Mint benchmarks and installers remain later build steps. The cold-interaction
 baseline is preserved at revision 7d468fe and in BENCHMARKS_BOUNDED_COLD.md.
+
+## 2026-10-27 — Offline art, typography and ambience
+
+The original illustrated assets were generated with the built-in development
+image tool using the style and recorded prompts, then visually reviewed and
+revised for the approved story and consistent character. The 27 shipped WebP
+images occupy 4,877,374 bytes. Transparent cutouts retain alpha; the manifest
+records source and export hashes, dimensions and sizes. A contact sheet and a
+local layered composition support review. Selected source PNGs remain in the
+ignored local development directory; Pillow 13 is used only for export.
+
+Atkinson Hyperlegible and Cormorant Garamond are bundled with their SIL Open
+Font Licenses, and the model license is included. The SPA build copies art,
+fonts and license texts from the asset directory into its offline output.
+Credits identify sources and disclose the development image generation.
+
+Ambient sound uses locally generated Web Audio noise and oscillator tones, with
+no audio downloads. The utility starts only on request, supports volume and
+cleanup, and is tested for interrupted startup. Its playback controls and
+audible integration belong to the later atmosphere step; no listening test is
+claimed yet.

@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
+    "prebuild": "node ../scripts/sync-art.mjs",
     "dev": "nuxt dev",
+    "predev": "node ../scripts/sync-art.mjs",
     "generate": "nuxt generate",
+    "pregenerate": "node ../scripts/sync-art.mjs",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",

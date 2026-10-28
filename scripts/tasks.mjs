@@ -23,7 +23,7 @@ const tasks = {
   test() {
     api(['pytest', '-q', '-m', 'not integration'])
     for (const folder of ['web', 'desktop']) part(folder, ['test'])
-    run(process.execPath, ['--test', 'scripts/dist.test.mjs', 'scripts/release.test.mjs'], { cwd: root })
+    run(process.execPath, ['--test', 'scripts/assets.test.mjs', 'scripts/dist.test.mjs', 'scripts/release.test.mjs'], { cwd: root })
   },
   check() { tasks.lint(); tasks.typecheck(); tasks.test() },
 }

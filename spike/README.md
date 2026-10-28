@@ -100,9 +100,24 @@ Model/prompt/options, input hashes, digest, RAM, OS and architecture accompany
 each result. JSON is saved after each model; NDJSON is flushed after every case
 so interrupted runs still leave evidence. The engine log stays in `.dev`.
 Only a complete run plus the canon audit can support choosing a default.
-Both complete comparisons currently fail the canon gate. No runtime default is
-selected and no spike PR has been opened. See `docs/BENCHMARKS.md` for the new
-results/options and `docs/BENCHMARKS_GEMMA4.md` for the historical report.
+Both historical free-prose comparisons fail the canon gate. The approved
+authored-selection approach qualifies Qwen 3.5 0.8B after explicit preparation;
+see `docs/BENCHMARKS.md` and `content/models.json`. No player-facing inference
+endpoint is added by the spike. Historical reports remain alongside the new one.
+
+The final command adds startup preparation and a 35-second residency probe:
+
+```sh
+uv run --project api python spike/benchmark.py --config spike/config-prepared.json --label my-computer-prepared
+```
+
+Preparation time is separate from player response time, and its memory is still
+charged to the process-tree peak. The game must gate input until preparation
+succeeds or explicitly enter fallback mode. Both classifier and selector use
+`keep_alive=-1`; the owned engine is explicitly unloaded/stopped on exit. The
+probe checks that thinking for more than 30 seconds does not trigger another
+cold load. Current Mac report: `uv run --project api python spike/report_bounded.py --prepared`.
+For the exact cold baseline sources/report, use revision `7d468fe` separately.
 
 ## Development checks
 

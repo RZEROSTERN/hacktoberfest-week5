@@ -242,3 +242,30 @@ short game, and unload on close. Startup cost must be reported separately and
 its memory charged to the budget. The actual preparation helper will be measured;
 game/wizard work must gate input on readiness rather than silently moving the
 same cold delay onto the first player message. All interactive targets remain.
+
+### Prepared-play outcome — spike qualifies
+
+The preparation helper uses the documented empty /api/generate preload with
+keep_alive=-1; classifier and selector calls also retain the model. The owned
+engine is still explicitly unloaded and stopped on close. A 35-second pause
+after the first interaction verifies residency beyond the previous 30-second
+keep-alive, with the following reply timed normally. Process-tree memory sampling
+includes preparation and idle time. Reference: https://docs.ollama.com/faq.
+
+Qwen 3.5 0.8B is the recommended default. Its unchanged classifier scores
+105/120 (87.5%) original and 109/120 (90.8%) new cases. All 240 prepared replies
+finish safely within 0.55 s, including both inference calls, validation and text
+resolution; warm safe-display p95 is 0.45 s. Peak engine memory is 1.85 GB.
+Startup preparation takes 2.61 s and is reported separately. No generated prose
+escapes the authored boundary, all 1,152 injected-prose cases are blocked and 96
+legal controls pass. Both tested models remain loaded across the idle probe and
+their owned process trees stop after the run. Gemma 3 remains ineligible because
+new-corpus accuracy is 83.3%, below the unchanged 85% threshold.
+
+content/models.json records the tested Qwen digest, size, license, context and
+preparation requirement for the later wizard. Runtime must read the player's
+local model selection; the catalog is a recommendation, not an implicit download.
+Game input must wait for successful preparation or explicitly enter authored
+fallback mode. The wizard/readiness UI, whole-game <=4 GB measurement, Windows/
+Mint benchmarks and installers remain later build steps. The cold-interaction
+baseline is preserved at revision 7d468fe and in BENCHMARKS_BOUNDED_COLD.md.

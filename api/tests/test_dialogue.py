@@ -7,6 +7,7 @@ import pytest
 
 from app import dialogue
 from app.dialogue import interpret, reply_choices, resolve_choice
+from app.model_lifecycle import prepare_model
 from app.ollama import Capture
 from app.story import load_story
 
@@ -82,6 +83,7 @@ def test_bad_choice_is_regenerated_once_and_only_authored_text_is_exposed(
     )
 
     def scripted(*args: Any, **kwargs: Any) -> Capture:
+        assert kwargs["keep_alive"] == -1
         return Capture(raw=next(outputs), done=True)
 
     monkeypatch.setattr(dialogue, "chat", scripted)
@@ -138,3 +140,15 @@ def test_holdout_has_fixed_balanced_labels_and_new_messages() -> None:
         assert sum(r["expected_relevant"] for r in selected) == 8
         assert sum(r["kind"] == "adversarial" for r in selected) == 6
         assert sum(r["language"] == "en" for r in selected) == 10
+
+
+@pytest.mark.parametrize(
+    "origin,model",
+    [
+        ("https://remote.example:443", "local-test"),
+        ("http://127.0.0.1:12345", "remote-cloud"),
+    ],
+)
+def test_preparation_refuses_remote_origins_and_cloud_tags(origin: str, model: str) -> None:
+    with pytest.raises(ValueError):
+        prepare_model(origin, model)

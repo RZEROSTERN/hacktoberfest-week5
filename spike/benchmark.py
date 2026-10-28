@@ -24,6 +24,7 @@ sys.path.insert(0, str(ROOT / "api"))
 import httpx  # noqa: E402
 import psutil  # noqa: E402
 from app.canon_validation import validate_proposal  # noqa: E402
+from app.model_lifecycle import prepare_model  # noqa: E402
 from app.ollama import (  # noqa: E402
     Classification,
     Proposal,
@@ -509,6 +510,11 @@ def main() -> None:
                 "content/lines.json",
                 "content/endings.json",
                 *(
+                    ["api/app/model_lifecycle.py"]
+                    if config.get("prepare_before_play")
+                    else []
+                ),
+                *(
                     ["api/app/dialogue.py", "spike/bounded.py"]
                     if config.get("reply_selection")
                     else []
@@ -599,7 +605,24 @@ def main() -> None:
                     meter.start()
                     rows: list[Json] = []
                     allocations: list[Json] = []
+                    preparation: Json | None = None
+                    idle_probe: Json | None = None
                     try:
+                        if config.get("prepare_before_play"):
+                            prepared = prepare_model(
+                                origin, model, num_ctx=config["num_ctx"]
+                            )
+                            preparation = {
+                                "startup_s": prepared.startup_s,
+                                "loaded": prepared.loaded,
+                                "metrics": prepared.metrics,
+                                "keep_alive": -1,
+                            }
+                            allocations.append(prepared.loaded)
+                            print(
+                                f"{model} prepared in {prepared.startup_s:.2f}s before play",
+                                flush=True,
+                            )
                         for index, case in enumerate(cases):
                             row = run_case(
                                 origin, model, case, story, system, meter, model_config
@@ -624,6 +647,27 @@ def main() -> None:
                                 f"fallback={row['fallback_used']}",
                                 flush=True,
                             )
+                            if index == 0 and config.get("idle_probe_s"):
+                                print(
+                                    f"{model} residency probe: {config['idle_probe_s']}s idle",
+                                    flush=True,
+                                )
+                                time.sleep(config["idle_probe_s"])
+                                resident = (
+                                    client.get("/api/ps").json().get("models", [])
+                                )
+                                idle_probe = {
+                                    "idle_s": config["idle_probe_s"],
+                                    "resident": any(
+                                        item.get("name") == model
+                                        or item.get("model") == model
+                                        for item in resident
+                                    ),
+                                }
+                                if not idle_probe["resident"]:
+                                    raise RuntimeError(
+                                        "The prepared model unloaded during player thinking time"
+                                    )
                     finally:
                         meter.stop()
                         unload(client, model)
@@ -633,6 +677,8 @@ def main() -> None:
                             "installed": entry,
                             "run_config": model_config,
                             "capabilities": shown.json().get("capabilities", []),
+                            "preparation": preparation,
+                            "idle_probe": idle_probe,
                             "summary": summarize(rows, meter, allocations, validation),
                             "rows": rows,
                         }

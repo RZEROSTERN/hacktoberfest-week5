@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import sys
@@ -18,7 +19,9 @@ from report import pair, seconds  # noqa: E402
 Json = dict[str, Any]
 
 
-def assess(model: Json, story: Story, validation: Json) -> Json:
+def assess(
+    model: Json, story: Story, validation: Json, *, prepared: bool = False
+) -> Json:
     rows = model["rows"]
     mismatches = []
     for row in rows:
@@ -66,6 +69,10 @@ def assess(model: Json, story: Story, validation: Json) -> Json:
         and validation["false_rejections"] == 0,
         "complete": all(s["total"] == 120 for s in subsets.values()),
     }
+    if prepared:
+        gates["prepared_and_resident"] = bool(model.get("preparation")) and bool(
+            (model.get("idle_probe") or {}).get("resident")
+        )
     return {
         "model": model["model"],
         "subsets": subsets,
@@ -76,16 +83,21 @@ def assess(model: Json, story: Story, validation: Json) -> Json:
 
 
 def main() -> None:
-    result_path = ROOT / "spike/results/mac-m2-pro-16gb-bounded.json"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--prepared", action="store_true")
+    args = parser.parse_args()
+    run_name = "prepared" if args.prepared else "bounded"
+    result_path = ROOT / f"spike/results/mac-m2-pro-16gb-{run_name}.json"
     results: Json = json.loads(result_path.read_text())
     story = load_story(ROOT / "content")
     for path, digest in json.loads(
-        (ROOT / "spike/results/run-source-bounded-sha256.json").read_text()
+        (ROOT / f"spike/results/run-source-{run_name}-sha256.json").read_text()
     ).items():
         if hashlib.sha256((ROOT / path).read_bytes()).hexdigest() != digest:
             raise ValueError(f"Measured source changed: {path}")
     assessments = [
-        assess(model, story, results["validator"]) for model in results["models"]
+        assess(model, story, results["validator"], prepared=args.prepared)
+        for model in results["models"]
     ]
     qualified = [
         m for m, a in zip(results["models"], assessments, strict=True) if a["qualified"]
@@ -102,7 +114,7 @@ def main() -> None:
         "limitation": "Output confinement is structural, not perfect semantic classification. "
         "Authored content was approved separately.",
     }
-    (ROOT / "spike/audit-bounded.json").write_text(
+    (ROOT / f"spike/audit-{run_name}.json").write_text(
         json.dumps(audit, ensure_ascii=False, indent=2) + "\n"
     )
     text = ["# Local model benchmark", "", "## Decision", ""]
@@ -112,8 +124,12 @@ def main() -> None:
             "It meets every measured gate below,"
         )
         text.append(
-            "including cold latency and the held-out corpus. "
-            "Runtime reads the player's local settings;"
+            (
+                "after explicit pregame preparation and on the held-out corpus. "
+                if args.prepared
+                else "including cold latency and the held-out corpus. "
+            )
+            + "Runtime reads the player's local settings;"
         )
         text.append(
             "no model is loaded/downloaded until consent and selection in the first-launch wizard."
@@ -151,9 +167,13 @@ def main() -> None:
         "  All timing includes both calls, validation and fallback. Total deadline: 6 seconds.",
         "- Context 4096, temperature 0, seed 42. Thinking omitted for Gemma 3 and disabled",
         "  where supported for Qwen. Capabilities, digests and options accompany the results.",
-        "- The first case is cold for a fresh engine/model process, not an emptied OS disk cache.",
+        (
+            "- The model is prepared before player input, then retained with keep_alive=-1."
+            if args.prepared
+            else "- The first case is cold for a fresh model process, not an emptied OS disk cache."
+        ),
         "  Warm p50/p95 use floor((n-1)*p), excluding that first case. Maxima include every case.",
-        "- No prompt was tuned against the held-out answers. The earlier 20-case pilot covers",
+        "- No prompt was tuned against the new-corpus answers. The earlier 20-case pilot covers",
         "  original cases only. An initial full start was interrupted for a lint-only import",
         "  annotation; the final complete run has a separate frozen source hash record.",
         "",
@@ -162,6 +182,32 @@ def main() -> None:
         "| Model | Original corpus | New held-out corpus | Fallbacks |",
         "| --- | ---: | ---: | ---: |",
     ]
+    if args.prepared:
+        text += [
+            "",
+            "## Startup preparation",
+            "",
+            "Startup is shown separately; it is not counted as a player reply or hidden",
+            "with a cosmetic token. Integration must gate player input until preparation",
+            "succeeds, or explicitly enter authored fallback mode. Startup memory is included",
+            "in the process-tree peak. Each model stays loaded across a 35-second idle probe,",
+            "longer than the previous 30-second keep-alive. The next real reply is timed too.",
+            "The API helper uses Ollama's documented empty-request preload and keep_alive=-1",
+            "([official FAQ](https://docs.ollama.com/faq)); explicit unload/owned-tree cleanup",
+            "still runs on close. Download consent and readiness UI are later steps.",
+            "The earlier cold-interaction run remains in",
+            "[BENCHMARKS_BOUNDED_COLD.md](BENCHMARKS_BOUNDED_COLD.md),",
+            "with source revision 7d468fe. Preparing is a startup orchestration fix, not",
+            "a claim that cold model loading itself now takes less than two seconds.",
+            "",
+            "| Model | Cold preparation seconds | Resident after idle |",
+            "| --- | ---: | --- |",
+        ]
+        for model in results["models"]:
+            text.append(
+                f"| {model['model']} | {model['preparation']['startup_s']:.2f} | "
+                f"{model['idle_probe']['resident']} |"
+            )
     for model, a in zip(results["models"], assessments, strict=True):
         cols = [
             f"{s['correct']}/{s['total']} ({100 * s['accuracy']:.1f}%)"
@@ -189,7 +235,11 @@ def main() -> None:
         )
     text += [
         "",
-        "| Model | Cold raw TTFT / full / safe | Maximum raw TTFT / full / safe |",
+        (
+            "| Model | First prepared TTFT / full / safe | Maximum TTFT / full / safe |"
+            if args.prepared
+            else "| Model | Cold raw TTFT / full / safe | Maximum raw TTFT / full / safe |"
+        ),
         "| --- | ---: | ---: |",
     ]
     for model in results["models"]:
@@ -233,7 +283,7 @@ def main() -> None:
         f"false rejections: **{v['false_rejections']}**.",
         "This checks whole-response confinement, not semantic entailment of arbitrary prose.",
         "Every selected ID/text in the real run is also replayed against its exact legal scope;",
-        "fallbacks are checked against their authored object/state text. See audit-bounded.json.",
+        f"Fallbacks are checked against authored object/state text. See audit-{run_name}.json.",
         "Unit regressions reject locked/foreign IDs, extra fields, prose before/after JSON,",
         "fences and wrong types; failures exercise the single retry and authored fallback.",
         "The approved biography, scenes and fallback text have not changed.",
@@ -242,7 +292,11 @@ def main() -> None:
         "",
         "Require >=85% accuracy separately on each corpus, every raw and safe first-text",
         "delay <2 s, every full reply <6 s, engine <=3 GB, complete data and no output",
-        "outside the authored boundary. These checks include cold cases and latency tails.",
+        (
+            "outside the authored boundary. Every prepared interaction and its tails are checked."
+            if args.prepared
+            else "outside the authored boundary. These checks include cold cases and latency tails."
+        ),
         "",
         "| Model | Failed gates | Qualified |",
         "| --- | --- | --- |",
@@ -256,15 +310,17 @@ def main() -> None:
         "",
         "## Evidence and reproduction",
         "",
-        "- spike/config-bounded.json; api/prompts/relevance.spike.v3.txt "
+        f"- spike/config-{run_name}.json; api/prompts/relevance.spike.v3.txt "
         "and reply-selection.v1.txt.",
         "- api/app/dialogue.py is the actual interpreter exercised by spike/bounded.py.",
-        "- spike/results/mac-m2-pro-16gb-bounded.json/.ndjson retain every synthetic decision.",
-        "- spike/results/run-source-bounded-sha256.json freezes the measured source/content.",
+        f"- spike/results/mac-m2-pro-16gb-{run_name}.json/.ndjson retain every synthetic decision.",
+        f"- spike/results/run-source-{run_name}-sha256.json freezes measured source/content.",
         "- spike/results/calibration-bounded-pilot.* retains the original-case pilot.",
-        "- spike/audit-bounded.json records replay results, gate decisions and selected default.",
+        f"- spike/audit-{run_name}.json records replay, gates and selected default.",
         "- [spike/README.md](../spike/README.md) has the same local command for all three OSes.",
-        "- Generate this report: uv run --project api python spike/report_bounded.py.",
+        "- Generate: uv run --project api python spike/report_bounded.py"
+        + (" --prepared" if args.prepared else "")
+        + ".",
         "- Windows and Linux Mint performance/installer testing remain unverified.",
         "",
         "The bounded approach sacrifices open-ended spirit prose. AI still controls semantic",
@@ -272,7 +328,10 @@ def main() -> None:
         "all facts, legal reply scopes, the clock, memory progression and endings.",
         "",
     ]
-    (ROOT / "docs/BENCHMARKS.md").write_text("\n".join(text).rstrip() + "\n")
+    output = (
+        "docs/BENCHMARKS.md" if args.prepared else "docs/BENCHMARKS_BOUNDED_COLD.md"
+    )
+    (ROOT / output).write_text("\n".join(text).rstrip() + "\n")
     print(json.dumps(audit, ensure_ascii=False, indent=2))
 
 

@@ -121,6 +121,7 @@ def chat(
     num_predict: int = 128,
     think: bool | None = False,
     schema: dict[str, object] | None = None,
+    keep_alive: str | int = "30s",
 ) -> Capture:
     if "cloud" in model.casefold():
         raise ValueError("Cloud model names are not permitted")
@@ -129,7 +130,7 @@ def chat(
         "messages": messages,
         "stream": True,
         "format": schema if schema is not None else proposal_schema(visible_fact_ids),
-        "keep_alive": "30s",
+        "keep_alive": keep_alive,
         "options": {"temperature": 0, "seed": 42, "num_ctx": num_ctx, "num_predict": num_predict},
     }
     if think is not None:

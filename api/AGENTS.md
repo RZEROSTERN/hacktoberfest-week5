@@ -9,6 +9,8 @@
 - Never expose unvalidated tokens while streaming. Benchmark the accepted-text boundary.
 - Model output classifies relevance and voices the spirit. Code owns state and endings.
 - One inference request at a time. Timeouts/errors preserve a playable fallback path.
+- Prepare the consented model before enabling dialogue; keep it resident during play.
+  Show preparation separately, allow authored fallback mode, and unload on close.
 - No cloud models, no remote inference URLs, no keys, no logging of player dialogue.
 - Cross-platform paths use pathlib; process inspection uses psutil, never POSIX-only calls.
 - Tests use scripted local fixtures; real-model tests are opt-in integration tests.

@@ -2,7 +2,9 @@
 
 ## Decision
 
-**No default qualifies.** Step 4 remains stopped before its PR; see failed gates below.
+**Select qwen3.5:0.8b as the recommended default.** It meets every measured gate below,
+after explicit pregame preparation and on the held-out corpus. Runtime reads the player's local settings;
+no model is loaded/downloaded until consent and selection in the first-launch wizard.
 
 The owner approved replacing free prose generation with authored reply selection.
 The local model still interprets free player messages and chooses a fitting reply.
@@ -15,7 +17,7 @@ and [BENCHMARKS_SMALL_PROSE.md](BENCHMARKS_SMALL_PROSE.md), with raw evidence/au
 
 ## Method
 
-- Run: 2026-10-27T23:08:07.429067+00:00; macOS-27.0-arm64-arm-64bit; arm64; engine v0.35.1.
+- Run: 2026-10-28T02:34:39.013385+00:00; macOS-27.0-arm64-arm-64bit; arm64; engine v0.35.1.
 - 16 GiB MacBook Pro M2 Pro; normal development desktop, one run per model.
 - Isolated bundled Ollama, own home/models, dynamic loopback port, low priority;
   one loaded model and one inference request at a time. No cloud inference.
@@ -28,9 +30,9 @@ and [BENCHMARKS_SMALL_PROSE.md](BENCHMARKS_SMALL_PROSE.md), with raw evidence/au
   All timing includes both calls, validation and fallback. Total deadline: 6 seconds.
 - Context 4096, temperature 0, seed 42. Thinking omitted for Gemma 3 and disabled
   where supported for Qwen. Capabilities, digests and options accompany the results.
-- The first case is cold for a fresh engine/model process, not an emptied OS disk cache.
+- The model is prepared before player input, then retained with keep_alive=-1.
   Warm p50/p95 use floor((n-1)*p), excluding that first case. Maxima include every case.
-- No prompt was tuned against the held-out answers. The earlier 20-case pilot covers
+- No prompt was tuned against the new-corpus answers. The earlier 20-case pilot covers
   original cases only. An initial full start was interrupted for a lint-only import
   annotation; the final complete run has a separate frozen source hash record.
 
@@ -38,6 +40,26 @@ and [BENCHMARKS_SMALL_PROSE.md](BENCHMARKS_SMALL_PROSE.md), with raw evidence/au
 
 | Model | Original corpus | New held-out corpus | Fallbacks |
 | --- | ---: | ---: | ---: |
+
+## Startup preparation
+
+Startup is shown separately; it is not counted as a player reply or hidden
+with a cosmetic token. Integration must gate player input until preparation
+succeeds, or explicitly enter authored fallback mode. Startup memory is included
+in the process-tree peak. Each model stays loaded across a 35-second idle probe,
+longer than the previous 30-second keep-alive. The next real reply is timed too.
+The API helper uses Ollama's documented empty-request preload and keep_alive=-1
+([official FAQ](https://docs.ollama.com/faq)); explicit unload/owned-tree cleanup
+still runs on close. Download consent and readiness UI are later steps.
+The earlier cold-interaction run remains in
+[BENCHMARKS_BOUNDED_COLD.md](BENCHMARKS_BOUNDED_COLD.md),
+with source revision 7d468fe. Preparing is a startup orchestration fix, not
+a claim that cold model loading itself now takes less than two seconds.
+
+| Model | Cold preparation seconds | Resident after idle |
+| --- | ---: | --- |
+| gemma3:1b | 1.30 | True |
+| qwen3.5:0.8b | 2.61 | True |
 | gemma3:1b | 103/120 (85.8%) | 100/120 (83.3%) | 0/240 |
 | qwen3.5:0.8b | 105/120 (87.5%) | 109/120 (90.8%) | 0/240 |
 
@@ -49,13 +71,13 @@ The typewriter animation is excluded. Neither metric is replaced with a cosmetic
 
 | Model | Warm raw TTFT | Warm full response | Warm safe first text |
 | --- | ---: | ---: | ---: |
-| gemma3:1b | 0.39 / 0.43 | 0.50 / 0.56 | 0.50 / 0.56 |
-| qwen3.5:0.8b | 0.34 / 0.36 | 0.41 / 0.45 | 0.41 / 0.45 |
+| gemma3:1b | 0.38 / 0.40 | 0.49 / 0.53 | 0.49 / 0.53 |
+| qwen3.5:0.8b | 0.34 / 0.36 | 0.41 / 0.44 | 0.41 / 0.45 |
 
-| Model | Cold raw TTFT / full / safe | Maximum raw TTFT / full / safe |
+| Model | First prepared TTFT / full / safe | Maximum TTFT / full / safe |
 | --- | ---: | ---: |
-| gemma3:1b | 1.75 / 1.85 / 1.85 | 1.75 / 1.85 / 1.85 |
-| qwen3.5:0.8b | 2.96 / 3.03 / 3.04 | 2.96 / 3.03 / 3.04 |
+| gemma3:1b | 0.44 / 0.54 / 0.54 | 0.48 / 0.58 / 0.59 |
+| qwen3.5:0.8b | 0.37 / 0.45 / 0.46 | 0.45 / 0.54 / 0.55 |
 
 ## Peak engine memory
 
@@ -66,8 +88,8 @@ GPU accounting and the whole Electron/game <=4 GB budget still need measurement.
 
 | Model | RSS GB | macOS footprint GB | Conservative peak GB |
 | --- | ---: | ---: | ---: |
-| gemma3:1b | 1.07 | 0.27 | 1.07 |
-| qwen3.5:0.8b | 1.86 | 0.91 | 1.86 |
+| gemma3:1b | 1.08 | 0.28 | 1.08 |
+| qwen3.5:0.8b | 1.85 | 0.88 | 1.85 |
 
 ## Authored-output boundary
 
@@ -76,7 +98,7 @@ placed next to legal IDs across both languages and every object/state/relevance 
 All **96** legal controls pass; false rejections: **0**.
 This checks whole-response confinement, not semantic entailment of arbitrary prose.
 Every selected ID/text in the real run is also replayed against its exact legal scope;
-fallbacks are checked against their authored object/state text. See audit-bounded.json.
+Fallbacks are checked against authored object/state text. See audit-prepared.json.
 Unit regressions reject locked/foreign IDs, extra fields, prose before/after JSON,
 fences and wrong types; failures exercise the single retry and authored fallback.
 The approved biography, scenes and fallback text have not changed.
@@ -85,23 +107,23 @@ The approved biography, scenes and fallback text have not changed.
 
 Require >=85% accuracy separately on each corpus, every raw and safe first-text
 delay <2 s, every full reply <6 s, engine <=3 GB, complete data and no output
-outside the authored boundary. These checks include cold cases and latency tails.
+outside the authored boundary. Every prepared interaction and its tails are checked.
 
 | Model | Failed gates | Qualified |
 | --- | --- | --- |
 | gemma3:1b | classification | False |
-| qwen3.5:0.8b | raw_ttft, safe_first_text | False |
+| qwen3.5:0.8b | None | True |
 
 ## Evidence and reproduction
 
-- spike/config-bounded.json; api/prompts/relevance.spike.v3.txt and reply-selection.v1.txt.
+- spike/config-prepared.json; api/prompts/relevance.spike.v3.txt and reply-selection.v1.txt.
 - api/app/dialogue.py is the actual interpreter exercised by spike/bounded.py.
-- spike/results/mac-m2-pro-16gb-bounded.json/.ndjson retain every synthetic decision.
-- spike/results/run-source-bounded-sha256.json freezes the measured source/content.
+- spike/results/mac-m2-pro-16gb-prepared.json/.ndjson retain every synthetic decision.
+- spike/results/run-source-prepared-sha256.json freezes measured source/content.
 - spike/results/calibration-bounded-pilot.* retains the original-case pilot.
-- spike/audit-bounded.json records replay results, gate decisions and selected default.
+- spike/audit-prepared.json records replay, gates and selected default.
 - [spike/README.md](../spike/README.md) has the same local command for all three OSes.
-- Generate this report: uv run --project api python spike/report_bounded.py.
+- Generate: uv run --project api python spike/report_bounded.py --prepared.
 - Windows and Linux Mint performance/installer testing remain unverified.
 
 The bounded approach sacrifices open-ended spirit prose. AI still controls semantic

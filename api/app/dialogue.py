@@ -130,6 +130,7 @@ def interpret(
             num_predict=32,
             think=think,
             schema=Classification.model_json_schema(),
+            keep_alive=-1,
         )
         result.relevant = Classification.model_validate_json(result.classification.raw).relevant
     except (httpx.HTTPError, ValueError, TimeoutError) as error:
@@ -170,6 +171,7 @@ def interpret(
                 num_predict=48,
                 think=think,
                 schema=schema,
+                keep_alive=-1,
             )
             result.reply_id, result.reply = resolve_choice(attempt.capture.raw, choices)
             result.fallback_used = False
